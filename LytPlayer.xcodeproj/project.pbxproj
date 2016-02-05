@@ -1,0 +1,511 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E5DC24901C64D16B007105A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC248F1C64D16B007105A7 /* AppDelegate.swift */; };
+		E5DC24921C64D16B007105A7 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24911C64D16B007105A7 /* FirstViewController.swift */; };
+		E5DC24941C64D16B007105A7 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24931C64D16B007105A7 /* SecondViewController.swift */; };
+		E5DC24971C64D16B007105A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5DC24951C64D16B007105A7 /* Main.storyboard */; };
+		E5DC24991C64D16B007105A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5DC24981C64D16B007105A7 /* Assets.xcassets */; };
+		E5DC249C1C64D16B007105A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5DC249A1C64D16B007105A7 /* LaunchScreen.storyboard */; };
+		E5DC24A71C64D16B007105A7 /* LytPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24A61C64D16B007105A7 /* LytPlayerTests.swift */; };
+		E5DC24B21C64D16B007105A7 /* LytPlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24B11C64D16B007105A7 /* LytPlayerUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E5DC24A31C64D16B007105A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5DC24841C64D16B007105A7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E5DC248B1C64D16B007105A7;
+			remoteInfo = LytPlayer;
+		};
+		E5DC24AE1C64D16B007105A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5DC24841C64D16B007105A7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E5DC248B1C64D16B007105A7;
+			remoteInfo = LytPlayer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E5DC248C1C64D16B007105A7 /* LytPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LytPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5DC248F1C64D16B007105A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E5DC24911C64D16B007105A7 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		E5DC24931C64D16B007105A7 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		E5DC24961C64D16B007105A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E5DC24981C64D16B007105A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E5DC249B1C64D16B007105A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E5DC249D1C64D16B007105A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5DC24A21C64D16B007105A7 /* LytPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LytPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5DC24A61C64D16B007105A7 /* LytPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LytPlayerTests.swift; sourceTree = "<group>"; };
+		E5DC24A81C64D16B007105A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5DC24AD1C64D16B007105A7 /* LytPlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LytPlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5DC24B11C64D16B007105A7 /* LytPlayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LytPlayerUITests.swift; sourceTree = "<group>"; };
+		E5DC24B31C64D16B007105A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E5DC24891C64D16B007105A7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5DC249F1C64D16B007105A7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5DC24AA1C64D16B007105A7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E5DC24831C64D16B007105A7 = {
+			isa = PBXGroup;
+			children = (
+				E5DC248E1C64D16B007105A7 /* LytPlayer */,
+				E5DC24A51C64D16B007105A7 /* LytPlayerTests */,
+				E5DC24B01C64D16B007105A7 /* LytPlayerUITests */,
+				E5DC248D1C64D16B007105A7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E5DC248D1C64D16B007105A7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E5DC248C1C64D16B007105A7 /* LytPlayer.app */,
+				E5DC24A21C64D16B007105A7 /* LytPlayerTests.xctest */,
+				E5DC24AD1C64D16B007105A7 /* LytPlayerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E5DC248E1C64D16B007105A7 /* LytPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				E5DC248F1C64D16B007105A7 /* AppDelegate.swift */,
+				E5DC24911C64D16B007105A7 /* FirstViewController.swift */,
+				E5DC24931C64D16B007105A7 /* SecondViewController.swift */,
+				E5DC24951C64D16B007105A7 /* Main.storyboard */,
+				E5DC24981C64D16B007105A7 /* Assets.xcassets */,
+				E5DC249A1C64D16B007105A7 /* LaunchScreen.storyboard */,
+				E5DC249D1C64D16B007105A7 /* Info.plist */,
+			);
+			path = LytPlayer;
+			sourceTree = "<group>";
+		};
+		E5DC24A51C64D16B007105A7 /* LytPlayerTests */ = {
+			isa = PBXGroup;
+			children = (
+				E5DC24A61C64D16B007105A7 /* LytPlayerTests.swift */,
+				E5DC24A81C64D16B007105A7 /* Info.plist */,
+			);
+			path = LytPlayerTests;
+			sourceTree = "<group>";
+		};
+		E5DC24B01C64D16B007105A7 /* LytPlayerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E5DC24B11C64D16B007105A7 /* LytPlayerUITests.swift */,
+				E5DC24B31C64D16B007105A7 /* Info.plist */,
+			);
+			path = LytPlayerUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E5DC248B1C64D16B007105A7 /* LytPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5DC24B61C64D16B007105A7 /* Build configuration list for PBXNativeTarget "LytPlayer" */;
+			buildPhases = (
+				E5DC24881C64D16B007105A7 /* Sources */,
+				E5DC24891C64D16B007105A7 /* Frameworks */,
+				E5DC248A1C64D16B007105A7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LytPlayer;
+			productName = LytPlayer;
+			productReference = E5DC248C1C64D16B007105A7 /* LytPlayer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E5DC24A11C64D16B007105A7 /* LytPlayerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5DC24B91C64D16B007105A7 /* Build configuration list for PBXNativeTarget "LytPlayerTests" */;
+			buildPhases = (
+				E5DC249E1C64D16B007105A7 /* Sources */,
+				E5DC249F1C64D16B007105A7 /* Frameworks */,
+				E5DC24A01C64D16B007105A7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E5DC24A41C64D16B007105A7 /* PBXTargetDependency */,
+			);
+			name = LytPlayerTests;
+			productName = LytPlayerTests;
+			productReference = E5DC24A21C64D16B007105A7 /* LytPlayerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E5DC24AC1C64D16B007105A7 /* LytPlayerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5DC24BC1C64D16B007105A7 /* Build configuration list for PBXNativeTarget "LytPlayerUITests" */;
+			buildPhases = (
+				E5DC24A91C64D16B007105A7 /* Sources */,
+				E5DC24AA1C64D16B007105A7 /* Frameworks */,
+				E5DC24AB1C64D16B007105A7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E5DC24AF1C64D16B007105A7 /* PBXTargetDependency */,
+			);
+			name = LytPlayerUITests;
+			productName = LytPlayerUITests;
+			productReference = E5DC24AD1C64D16B007105A7 /* LytPlayerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E5DC24841C64D16B007105A7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = nota.dk;
+				TargetAttributes = {
+					E5DC248B1C64D16B007105A7 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+					E5DC24A11C64D16B007105A7 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = E5DC248B1C64D16B007105A7;
+					};
+					E5DC24AC1C64D16B007105A7 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = E5DC248B1C64D16B007105A7;
+					};
+				};
+			};
+			buildConfigurationList = E5DC24871C64D16B007105A7 /* Build configuration list for PBXProject "LytPlayer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E5DC24831C64D16B007105A7;
+			productRefGroup = E5DC248D1C64D16B007105A7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E5DC248B1C64D16B007105A7 /* LytPlayer */,
+				E5DC24A11C64D16B007105A7 /* LytPlayerTests */,
+				E5DC24AC1C64D16B007105A7 /* LytPlayerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E5DC248A1C64D16B007105A7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5DC249C1C64D16B007105A7 /* LaunchScreen.storyboard in Resources */,
+				E5DC24991C64D16B007105A7 /* Assets.xcassets in Resources */,
+				E5DC24971C64D16B007105A7 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5DC24A01C64D16B007105A7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5DC24AB1C64D16B007105A7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E5DC24881C64D16B007105A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5DC24941C64D16B007105A7 /* SecondViewController.swift in Sources */,
+				E5DC24901C64D16B007105A7 /* AppDelegate.swift in Sources */,
+				E5DC24921C64D16B007105A7 /* FirstViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5DC249E1C64D16B007105A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5DC24A71C64D16B007105A7 /* LytPlayerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5DC24A91C64D16B007105A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5DC24B21C64D16B007105A7 /* LytPlayerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E5DC24A41C64D16B007105A7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E5DC248B1C64D16B007105A7 /* LytPlayer */;
+			targetProxy = E5DC24A31C64D16B007105A7 /* PBXContainerItemProxy */;
+		};
+		E5DC24AF1C64D16B007105A7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E5DC248B1C64D16B007105A7 /* LytPlayer */;
+			targetProxy = E5DC24AE1C64D16B007105A7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E5DC24951C64D16B007105A7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E5DC24961C64D16B007105A7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E5DC249A1C64D16B007105A7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E5DC249B1C64D16B007105A7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E5DC24B41C64D16B007105A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E5DC24B51C64D16B007105A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E5DC24B71C64D16B007105A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = LytPlayer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = nota.dk.LytPlayer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E5DC24B81C64D16B007105A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = LytPlayer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = nota.dk.LytPlayer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E5DC24BA1C64D16B007105A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = LytPlayerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = nota.dk.LytPlayerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LytPlayer.app/LytPlayer";
+			};
+			name = Debug;
+		};
+		E5DC24BB1C64D16B007105A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = LytPlayerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = nota.dk.LytPlayerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LytPlayer.app/LytPlayer";
+			};
+			name = Release;
+		};
+		E5DC24BD1C64D16B007105A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = LytPlayerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = nota.dk.LytPlayerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = LytPlayer;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		E5DC24BE1C64D16B007105A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = LytPlayerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = nota.dk.LytPlayerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = LytPlayer;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E5DC24871C64D16B007105A7 /* Build configuration list for PBXProject "LytPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5DC24B41C64D16B007105A7 /* Debug */,
+				E5DC24B51C64D16B007105A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E5DC24B61C64D16B007105A7 /* Build configuration list for PBXNativeTarget "LytPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5DC24B71C64D16B007105A7 /* Debug */,
+				E5DC24B81C64D16B007105A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E5DC24B91C64D16B007105A7 /* Build configuration list for PBXNativeTarget "LytPlayerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5DC24BA1C64D16B007105A7 /* Debug */,
+				E5DC24BB1C64D16B007105A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E5DC24BC1C64D16B007105A7 /* Build configuration list for PBXNativeTarget "LytPlayerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5DC24BD1C64D16B007105A7 /* Debug */,
+				E5DC24BE1C64D16B007105A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E5DC24841C64D16B007105A7 /* Project object */;
+}
