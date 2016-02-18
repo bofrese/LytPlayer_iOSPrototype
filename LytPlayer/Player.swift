@@ -17,16 +17,23 @@ import MediaPlayer
 
 // TODO: Should be singelton
 
+typealias Callback = () -> ()
+
 class Player : NSObject, AVAudioPlayerDelegate {
     var isPlaying = false
     var audioPlayer = AVAudioPlayer()
     var currentBook = memoBook
-    var currentPart = 0
+    var currentPartNo = 0
+    var partSwitchCallback: Callback?
     
     override init() {
         super.init()
         configureRemoteControlEvents()
         setupCurrentAudioPart()
+    }
+    
+    func setCallback( cb: Callback) {
+        partSwitchCallback = cb
     }
     
     func pause() {
@@ -37,15 +44,26 @@ class Player : NSObject, AVAudioPlayerDelegate {
 
     func nextAudioPart() {
         // TODO: Check for last part...
-        setupCurrentAudioPart( currentPart + 1) { self.play() }
+        setupCurrentAudioPart( currentPartNo + 1) { self.play() }
     }
     
     func previousAudioPart() {
-        setupCurrentAudioPart( max(currentPart - 1, 0) ) { self.play() }
+        setupCurrentAudioPart( max(currentPartNo - 1, 0) ) { self.play() }
+    }
+    func playPartForId( partId: String) {
+        NSLog("playPartForId(\(partId))...")
+        if let partNo = currentBook.partNoForId( partId ) {
+            setupCurrentAudioPart( partNo ) { self.play() }
+        } else {
+            NSLog("partId \(partId) not found")
+        }
+    }
+    func currentPart() -> BookPart {
+        return currentBook.part(currentPartNo)
     }
     
-    
     func setupCurrentAudioPart(partNo: Int = 0, success: () -> () = {} ) {
+        NSLog("setupCurrentAudioPart( \(partNo)) ...")
         if let url = currentBook.urlForPart( partNo ) {
             let part = currentBook.part(partNo )
             
@@ -54,7 +72,8 @@ class Player : NSObject, AVAudioPlayerDelegate {
                 do {
                     try self.audioPlayer = AVAudioPlayer(contentsOfURL: trimmedUrl )
                     self.audioPlayer.delegate = self
-                    self.currentPart = partNo
+                    self.currentPartNo = partNo
+                    self.partSwitchCallback?()
                     success()
                 } catch {
                         // TODO: ??? can happend on multiple fast click in UI - should be prevented!
@@ -75,8 +94,8 @@ class Player : NSObject, AVAudioPlayerDelegate {
     }
 
     func currentStatus() -> String {
-        let part = currentBook.parts[currentPart]
-        let status = "'\(currentBook.title)' (\(currentPart)/\(currentBook.parts.count)) \(part.file) \(part.begin)s - \(part.end)s"
+        let part = currentBook.parts[currentPartNo]
+        let status = "'\(currentBook.title)' (\(currentPartNo)/\(currentBook.parts.count)) \(part.file) \(part.begin)s - \(part.end)s"
         return status
     }
     
@@ -86,9 +105,9 @@ class Player : NSObject, AVAudioPlayerDelegate {
         infoCenter.nowPlayingInfo = [
             // MPMediaItemPropertyMediaType: MPMediaType.AudioBook, // TODO
             MPMediaItemPropertyAlbumArtist: currentBook.author,
-            MPMediaItemPropertyAlbumTitle: currentBook.parts[ currentPart].file, // TODO: Subtitle?
+            MPMediaItemPropertyAlbumTitle: currentBook.parts[ currentPartNo].file, // TODO: Subtitle?
             MPMediaItemPropertyTitle: currentBook.title,
-            MPNowPlayingInfoPropertyChapterNumber: currentPart,
+            MPNowPlayingInfoPropertyChapterNumber: currentPartNo,
             MPNowPlayingInfoPropertyChapterCount : currentBook.parts.count,
             MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: currentBook.coverImage() ),
             MPMediaItemPropertyPlaybackDuration: currentBook.duration,

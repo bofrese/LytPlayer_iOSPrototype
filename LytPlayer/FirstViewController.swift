@@ -25,16 +25,36 @@ class FirstViewController: UIViewController, WKNavigationDelegate {
             player.pause()
         } else {
             player.play()
+            self.player.setCallback( { self.scrollToCurrentPart()} )
         }
         
         updatePlayButton()
     }
     @IBAction func nextButtonPressed(sender: UIButton) {
         player.nextAudioPart()
+        scrollToCurrentPart()
     }
-    
+
     @IBAction func previousButtonPressed(sender: AnyObject) {
         player.previousAudioPart()
+        scrollToCurrentPart()
+    }
+
+    func scrollToCurrentPart() {
+        if let textId = player.currentPart().textId {
+            NSLog("Scroll to textId \(textId)")
+
+            webView?.evaluateJavaScript("window.location.hash = '#\(textId)';", completionHandler: {
+                (obj: AnyObject?, err: NSError?) in
+                if let error = err {
+                  NSLog("scroll failed \(error)")
+                } else {
+                    NSLog("Scroll succeeded?")
+                }
+            } )
+        } else {
+            NSLog("No textId defined for part")
+        }
     }
     
     func updatePlayButton() {
@@ -57,16 +77,46 @@ class FirstViewController: UIViewController, WKNavigationDelegate {
         self.webView?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         self.webView?.allowsBackForwardNavigationGestures = true
         self.webViewPlaceholder.addSubview(self.webView!)
+        self.webView?.navigationDelegate = self
+        self.webView?.allowsBackForwardNavigationGestures = true
+
+        
+            /*
+        if let url = urlForFile( "18716.htm" ) {
+            let request = NSURLRequest(URL: url)
+            webView?.loadRequest(request)
+            webView?.evaluateJavaScript("window.location.hash = '#pmsu00099';", completionHandler: { (obj: AnyObject?, err: NSError?) in  NSLog("scroll failed")} )
+            
+        }
+*/
+
         
         
         if let path = NSBundle.mainBundle().pathForResource( "18716/18716" , ofType: "htm") {
             let url  = NSURL.fileURLWithPath(path)
             let request = NSURLRequest(URL: url)
             webView?.loadRequest(request)
-            webView?.navigationDelegate = self
-            webView?.allowsBackForwardNavigationGestures = true
+            /*
+            webView?.evaluateJavaScript("window.location.hash = '#pmsu00099';", completionHandler: { (obj: AnyObject?, err: NSError?) in  NSLog("scroll failed")} )
+            */
         }
+        
+        
     }
+
+    // TODO: Not used - cleanup....
+    func urlForFile( file: String ) -> NSURL? {
+        //let fragment = "#pmsu00099"
+        var url: NSURL?
+        if let path = NSBundle.mainBundle().pathForResource(file, ofType: nil, inDirectory: "18716") {
+            //path.appendContentsOf(fragment)
+            url = NSURL.fileURLWithPath(path)
+        }
+        
+        return url
+    }
+    
+
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -89,18 +139,20 @@ class FirstViewController: UIViewController, WKNavigationDelegate {
     // Policy when clicking the link
     func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
         NSLog("webView decidePolicyForNavigationAction... ")
-        NSLog( navigationAction.description)
+        //NSLog( navigationAction.description)
         if let url = navigationAction.request.URL,
             let ext = url.pathExtension
         {
             if ( ext == "smil") {
                 decisionHandler(.Cancel)
-                var html = "<html><body><H1>TODO</H1>"
-                if let smilFile = url.pathComponents?.last {
-                    html += smilFile
+                if var smilFile = url.pathComponents?.last {
+                    if let fragment = url.fragment {
+                        smilFile = "\(smilFile)#\(fragment)"
+                    }
+                    NSLog("---->>>----- Trying to skip to partId: \(smilFile)")
+                    player.playPartForId( smilFile )
                 }
-                html += "</body></html>"
-                webView.loadHTMLString(html, baseURL: nil)
+
             } else {
                 decisionHandler(.Allow)
             }

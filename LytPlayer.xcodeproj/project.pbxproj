@@ -9,20 +9,12 @@
 /* Begin PBXBuildFile section */
 		E57B9A081C761562001B91FE /* AudioFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B9A071C761562001B91FE /* AudioFunctions.swift */; };
 		E58468571C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
-		E58468581C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
-		E58468591C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
 		E584685B1C68B3CE00A9D8C9 /* 18716 in Resources */ = {isa = PBXBuildFile; fileRef = E584685A1C68B3CE00A9D8C9 /* 18716 */; };
 		E584685C1C68B3CE00A9D8C9 /* 18716 in Resources */ = {isa = PBXBuildFile; fileRef = E584685A1C68B3CE00A9D8C9 /* 18716 */; };
 		E584685D1C68B3CE00A9D8C9 /* 18716 in Resources */ = {isa = PBXBuildFile; fileRef = E584685A1C68B3CE00A9D8C9 /* 18716 */; };
 		E584685F1C68B78A00A9D8C9 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584685E1C68B78A00A9D8C9 /* Book.swift */; };
-		E58468601C68B78A00A9D8C9 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584685E1C68B78A00A9D8C9 /* Book.swift */; };
-		E58468611C68B78A00A9D8C9 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584685E1C68B78A00A9D8C9 /* Book.swift */; };
 		E58468631C68B7B400A9D8C9 /* BookPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468621C68B7B400A9D8C9 /* BookPart.swift */; };
-		E58468641C68B7B400A9D8C9 /* BookPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468621C68B7B400A9D8C9 /* BookPart.swift */; };
-		E58468651C68B7B400A9D8C9 /* BookPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468621C68B7B400A9D8C9 /* BookPart.swift */; };
 		E58468671C68C69500A9D8C9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468661C68C69500A9D8C9 /* Player.swift */; };
-		E58468681C68C69500A9D8C9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468661C68C69500A9D8C9 /* Player.swift */; };
-		E58468691C68C69500A9D8C9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468661C68C69500A9D8C9 /* Player.swift */; };
 		E5DC24901C64D16B007105A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC248F1C64D16B007105A7 /* AppDelegate.swift */; };
 		E5DC24921C64D16B007105A7 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24911C64D16B007105A7 /* FirstViewController.swift */; };
 		E5DC24941C64D16B007105A7 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24931C64D16B007105A7 /* SecondViewController.swift */; };
@@ -326,11 +318,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E58468581C68B35600A9D8C9 /* MemoBook.swift in Sources */,
 				E5DC24A71C64D16B007105A7 /* LytPlayerTests.swift in Sources */,
-				E58468601C68B78A00A9D8C9 /* Book.swift in Sources */,
-				E58468681C68C69500A9D8C9 /* Player.swift in Sources */,
-				E58468641C68B7B400A9D8C9 /* BookPart.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,11 +326,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E58468591C68B35600A9D8C9 /* MemoBook.swift in Sources */,
 				E5DC24B21C64D16B007105A7 /* LytPlayerUITests.swift in Sources */,
-				E58468611C68B78A00A9D8C9 /* Book.swift in Sources */,
-				E58468691C68C69500A9D8C9 /* Player.swift in Sources */,
-				E58468651C68B7B400A9D8C9 /* BookPart.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

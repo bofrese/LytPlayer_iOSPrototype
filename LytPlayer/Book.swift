@@ -52,6 +52,19 @@ class Book: Playable {
     func part( partNumber: Int ) -> BookPart {
         return parts[ partNumber]
     }
+    func partNoForId( partId: String ) -> Int? {
+        
+        for idx in 0..<parts.count {
+            if let foundId = parts[ idx ].id {
+                if foundId == partId {
+                    return idx
+                }
+            }
+        }
+        
+        return nil
+    }
+
     
     func coverImage() -> UIImage {
         var coverImg: UIImage?  // TODO: Provide default cover instead (Nota logo?)
