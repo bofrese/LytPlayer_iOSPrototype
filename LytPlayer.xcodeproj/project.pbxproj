@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E58468571C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
+		E58468581C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
+		E58468591C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
+		E584685B1C68B3CE00A9D8C9 /* 18716 in Resources */ = {isa = PBXBuildFile; fileRef = E584685A1C68B3CE00A9D8C9 /* 18716 */; };
+		E584685C1C68B3CE00A9D8C9 /* 18716 in Resources */ = {isa = PBXBuildFile; fileRef = E584685A1C68B3CE00A9D8C9 /* 18716 */; };
+		E584685D1C68B3CE00A9D8C9 /* 18716 in Resources */ = {isa = PBXBuildFile; fileRef = E584685A1C68B3CE00A9D8C9 /* 18716 */; };
+		E584685F1C68B78A00A9D8C9 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584685E1C68B78A00A9D8C9 /* Book.swift */; };
+		E58468601C68B78A00A9D8C9 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584685E1C68B78A00A9D8C9 /* Book.swift */; };
+		E58468611C68B78A00A9D8C9 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584685E1C68B78A00A9D8C9 /* Book.swift */; };
+		E58468631C68B7B400A9D8C9 /* BookPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468621C68B7B400A9D8C9 /* BookPart.swift */; };
+		E58468641C68B7B400A9D8C9 /* BookPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468621C68B7B400A9D8C9 /* BookPart.swift */; };
+		E58468651C68B7B400A9D8C9 /* BookPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468621C68B7B400A9D8C9 /* BookPart.swift */; };
+		E58468671C68C69500A9D8C9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468661C68C69500A9D8C9 /* Player.swift */; };
+		E58468681C68C69500A9D8C9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468661C68C69500A9D8C9 /* Player.swift */; };
+		E58468691C68C69500A9D8C9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468661C68C69500A9D8C9 /* Player.swift */; };
 		E5DC24901C64D16B007105A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC248F1C64D16B007105A7 /* AppDelegate.swift */; };
 		E5DC24921C64D16B007105A7 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24911C64D16B007105A7 /* FirstViewController.swift */; };
 		E5DC24941C64D16B007105A7 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24931C64D16B007105A7 /* SecondViewController.swift */; };
@@ -15,6 +30,8 @@
 		E5DC249C1C64D16B007105A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5DC249A1C64D16B007105A7 /* LaunchScreen.storyboard */; };
 		E5DC24A71C64D16B007105A7 /* LytPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24A61C64D16B007105A7 /* LytPlayerTests.swift */; };
 		E5DC24B21C64D16B007105A7 /* LytPlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24B11C64D16B007105A7 /* LytPlayerUITests.swift */; };
+		E5DC24C01C64EFA5007105A7 /* 010_FORORD.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E5DC24BF1C64EFA5007105A7 /* 010_FORORD.mp3 */; };
+		E5DC24C31C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E5DC24C21C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +52,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E58468561C68B35600A9D8C9 /* MemoBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoBook.swift; sourceTree = "<group>"; };
+		E584685A1C68B3CE00A9D8C9 /* 18716 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = 18716; sourceTree = "<group>"; };
+		E584685E1C68B78A00A9D8C9 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		E58468621C68B7B400A9D8C9 /* BookPart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookPart.swift; sourceTree = "<group>"; };
+		E58468661C68C69500A9D8C9 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		E5DC248C1C64D16B007105A7 /* LytPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LytPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5DC248F1C64D16B007105A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5DC24911C64D16B007105A7 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +71,8 @@
 		E5DC24AD1C64D16B007105A7 /* LytPlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LytPlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5DC24B11C64D16B007105A7 /* LytPlayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LytPlayerUITests.swift; sourceTree = "<group>"; };
 		E5DC24B31C64D16B007105A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5DC24BF1C64EFA5007105A7 /* 010_FORORD.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 010_FORORD.mp3; sourceTree = "<group>"; };
+		E5DC24C21C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 008_ET__DEN_MEST_INTELLI.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,12 +123,17 @@
 		E5DC248E1C64D16B007105A7 /* LytPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				E5DC248F1C64D16B007105A7 /* AppDelegate.swift */,
+				E5DC24C11C64EFA9007105A7 /* TestAudio */,
 				E5DC24911C64D16B007105A7 /* FirstViewController.swift */,
+				E58468661C68C69500A9D8C9 /* Player.swift */,
+				E5DC248F1C64D16B007105A7 /* AppDelegate.swift */,
 				E5DC24931C64D16B007105A7 /* SecondViewController.swift */,
+				E58468561C68B35600A9D8C9 /* MemoBook.swift */,
+				E584685E1C68B78A00A9D8C9 /* Book.swift */,
 				E5DC24951C64D16B007105A7 /* Main.storyboard */,
 				E5DC24981C64D16B007105A7 /* Assets.xcassets */,
 				E5DC249A1C64D16B007105A7 /* LaunchScreen.storyboard */,
+				E58468621C68B7B400A9D8C9 /* BookPart.swift */,
 				E5DC249D1C64D16B007105A7 /* Info.plist */,
 			);
 			path = LytPlayer;
@@ -126,6 +155,16 @@
 				E5DC24B31C64D16B007105A7 /* Info.plist */,
 			);
 			path = LytPlayerUITests;
+			sourceTree = "<group>";
+		};
+		E5DC24C11C64EFA9007105A7 /* TestAudio */ = {
+			isa = PBXGroup;
+			children = (
+				E584685A1C68B3CE00A9D8C9 /* 18716 */,
+				E5DC24BF1C64EFA5007105A7 /* 010_FORORD.mp3 */,
+				E5DC24C21C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 */,
+			);
+			name = TestAudio;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +235,11 @@
 				TargetAttributes = {
 					E5DC248B1C64D16B007105A7 = {
 						CreatedOnToolsVersion = 7.2.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					E5DC24A11C64D16B007105A7 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -232,8 +276,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E584685B1C68B3CE00A9D8C9 /* 18716 in Resources */,
+				E5DC24C01C64EFA5007105A7 /* 010_FORORD.mp3 in Resources */,
 				E5DC249C1C64D16B007105A7 /* LaunchScreen.storyboard in Resources */,
 				E5DC24991C64D16B007105A7 /* Assets.xcassets in Resources */,
+				E5DC24C31C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 in Resources */,
 				E5DC24971C64D16B007105A7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -242,6 +289,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E584685C1C68B3CE00A9D8C9 /* 18716 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +297,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E584685D1C68B3CE00A9D8C9 /* 18716 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +309,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5DC24941C64D16B007105A7 /* SecondViewController.swift in Sources */,
+				E58468631C68B7B400A9D8C9 /* BookPart.swift in Sources */,
 				E5DC24901C64D16B007105A7 /* AppDelegate.swift in Sources */,
+				E58468571C68B35600A9D8C9 /* MemoBook.swift in Sources */,
+				E58468671C68C69500A9D8C9 /* Player.swift in Sources */,
+				E584685F1C68B78A00A9D8C9 /* Book.swift in Sources */,
 				E5DC24921C64D16B007105A7 /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,7 +322,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E58468581C68B35600A9D8C9 /* MemoBook.swift in Sources */,
 				E5DC24A71C64D16B007105A7 /* LytPlayerTests.swift in Sources */,
+				E58468601C68B78A00A9D8C9 /* Book.swift in Sources */,
+				E58468681C68C69500A9D8C9 /* Player.swift in Sources */,
+				E58468641C68B7B400A9D8C9 /* BookPart.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,7 +334,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E58468591C68B35600A9D8C9 /* MemoBook.swift in Sources */,
 				E5DC24B21C64D16B007105A7 /* LytPlayerUITests.swift in Sources */,
+				E58468611C68B78A00A9D8C9 /* Book.swift in Sources */,
+				E58468691C68C69500A9D8C9 /* Player.swift in Sources */,
+				E58468651C68B7B400A9D8C9 /* BookPart.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,6 +549,7 @@
 				E5DC24B81C64D16B007105A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E5DC24B91C64D16B007105A7 /* Build configuration list for PBXNativeTarget "LytPlayerTests" */ = {
 			isa = XCConfigurationList;
@@ -496,6 +558,7 @@
 				E5DC24BB1C64D16B007105A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E5DC24BC1C64D16B007105A7 /* Build configuration list for PBXNativeTarget "LytPlayerUITests" */ = {
 			isa = XCConfigurationList;
@@ -504,6 +567,7 @@
 				E5DC24BE1C64D16B007105A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
