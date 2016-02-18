@@ -49,6 +49,9 @@ class Book: Playable {
         
         return url
     }
+    func part( partNumber: Int ) -> BookPart {
+        return parts[ partNumber]
+    }
     
     func coverImage() -> UIImage {
         var coverImg: UIImage?  // TODO: Provide default cover instead (Nota logo?)

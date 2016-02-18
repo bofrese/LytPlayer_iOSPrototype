@@ -19,29 +19,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Dn9-Ym-ESk">
-                                <rect key="frame" x="20" y="20" width="560" height="531"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="531"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QEM-1c-LRJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="560" height="474"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="474"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fkb-R2-jat">
-                                        <rect key="frame" x="0.0" y="474" width="560" height="57"/>
+                                        <rect key="frame" x="0.0" y="474" width="600" height="57"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRj-gH-UML">
-                                                <rect key="frame" x="0.0" y="0.0" width="104" height="57"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="112" height="57"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="0.0" maxY="20"/>
                                                 <state key="normal" title="ı&lt;"/>
+                                                <connections>
+                                                    <action selector="previousButtonPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="na1-zR-8nx"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f6a-5J-SKd">
-                                                <rect key="frame" x="114" y="0.0" width="104" height="57"/>
+                                                <rect key="frame" x="122" y="0.0" width="112" height="57"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="0.0" maxY="20"/>
                                                 <state key="normal" title="&lt;15"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z5B-bf-Lu6">
-                                                <rect key="frame" x="228" y="0.0" width="104" height="57"/>
+                                                <rect key="frame" x="244" y="0.0" width="112" height="57"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="20" maxY="20"/>
                                                 <state key="normal" title="Play"/>
@@ -50,18 +53,23 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cdz-9b-uPV">
-                                                <rect key="frame" x="342" y="0.0" width="104" height="57"/>
+                                                <rect key="frame" x="366" y="0.0" width="112" height="57"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="0.0" maxY="20"/>
                                                 <state key="normal" title="15&gt;"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lhL-Ud-aJa">
-                                                <rect key="frame" x="456" y="0.0" width="104" height="57"/>
+                                                <rect key="frame" x="488" y="0.0" width="112" height="57"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="0.0" maxY="20"/>
                                                 <state key="normal" title="&gt;ı"/>
+                                                <connections>
+                                                    <action selector="nextButtonPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="DI3-1Z-nrf"/>
+                                                </connections>
                                             </button>
                                         </subviews>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </stackView>
                                 </subviews>
                                 <constraints>
@@ -74,11 +82,21 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="Dn9-Ym-ESk" secondAttribute="bottom" id="2YL-NL-XPD"/>
+                            <constraint firstItem="Dn9-Ym-ESk" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="3y3-NY-qib"/>
+                            <constraint firstAttribute="trailing" secondItem="Dn9-Ym-ESk" secondAttribute="trailing" id="Gbv-oG-KhV"/>
                             <constraint firstItem="Dn9-Ym-ESk" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="OQu-BL-kcm"/>
                             <constraint firstItem="Dn9-Ym-ESk" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" id="QQn-cK-04v"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Dn9-Ym-ESk" secondAttribute="trailing" id="Qwc-8h-mLn"/>
                             <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="Dn9-Ym-ESk" secondAttribute="bottom" id="fid-fW-dmI"/>
+                            <constraint firstItem="Dn9-Ym-ESk" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" id="sjQ-Na-rDG"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="QQn-cK-04v"/>
+                                <exclude reference="Qwc-8h-mLn"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="Lyt" image="first" id="acW-dT-cKf"/>
                     <connections>
@@ -142,6 +160,9 @@
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="0.92156862745098034" green="0.92549019607843142" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.14509803921568629" green="0.14509803921568629" blue="0.14509803921568629" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="selectedImageTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>

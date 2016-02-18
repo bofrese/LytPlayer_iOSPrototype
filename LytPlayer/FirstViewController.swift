@@ -29,6 +29,13 @@ class FirstViewController: UIViewController, WKNavigationDelegate {
         
         updatePlayButton()
     }
+    @IBAction func nextButtonPressed(sender: UIButton) {
+        player.nextAudioPart()
+    }
+    
+    @IBAction func previousButtonPressed(sender: AnyObject) {
+        player.previousAudioPart()
+    }
     
     func updatePlayButton() {
         let buttonTitle = ( player.isPlaying ? "Pause" : "Play")
@@ -38,15 +45,12 @@ class FirstViewController: UIViewController, WKNavigationDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        updatePlayButton()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
         
         let prefs = WKPreferences()
         let conf = WKWebViewConfiguration()
         prefs.javaScriptCanOpenWindowsAutomatically = true
         prefs.javaScriptEnabled = true
+        //prefs.minimumFontSize = 30  // No effect????
         conf.preferences = prefs
         
         self.webView = WKWebView(frame: self.webViewPlaceholder.bounds, configuration: conf) // instantiate WKWebView
@@ -62,18 +66,12 @@ class FirstViewController: UIViewController, WKNavigationDelegate {
             webView?.navigationDelegate = self
             webView?.allowsBackForwardNavigationGestures = true
         }
-
-        
-            /*
-        if let startUrl = NSURL(string:"http://m.e17.dk/") {
-            let request = NSURLRequest(URL: startUrl)
-            webView?.loadRequest(request)
-            webView?.navigationDelegate = self
-            webView?.allowsBackForwardNavigationGestures = true
-        }
-*/
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        updatePlayButton()
     }
     
     // ............ WKNavigationDelegate ................

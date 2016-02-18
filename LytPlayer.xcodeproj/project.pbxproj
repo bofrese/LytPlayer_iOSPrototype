@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E57B9A081C761562001B91FE /* AudioFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B9A071C761562001B91FE /* AudioFunctions.swift */; };
 		E58468571C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
 		E58468581C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
 		E58468591C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E57B9A071C761562001B91FE /* AudioFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFunctions.swift; sourceTree = "<group>"; };
 		E58468561C68B35600A9D8C9 /* MemoBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoBook.swift; sourceTree = "<group>"; };
 		E584685A1C68B3CE00A9D8C9 /* 18716 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = 18716; sourceTree = "<group>"; };
 		E584685E1C68B78A00A9D8C9 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				E5DC24C11C64EFA9007105A7 /* TestAudio */,
 				E5DC24911C64D16B007105A7 /* FirstViewController.swift */,
 				E58468661C68C69500A9D8C9 /* Player.swift */,
+				E57B9A071C761562001B91FE /* AudioFunctions.swift */,
 				E5DC248F1C64D16B007105A7 /* AppDelegate.swift */,
 				E5DC24931C64D16B007105A7 /* SecondViewController.swift */,
 				E58468561C68B35600A9D8C9 /* MemoBook.swift */,
@@ -310,6 +313,7 @@
 			files = (
 				E5DC24941C64D16B007105A7 /* SecondViewController.swift in Sources */,
 				E58468631C68B7B400A9D8C9 /* BookPart.swift in Sources */,
+				E57B9A081C761562001B91FE /* AudioFunctions.swift in Sources */,
 				E5DC24901C64D16B007105A7 /* AppDelegate.swift in Sources */,
 				E58468571C68B35600A9D8C9 /* MemoBook.swift in Sources */,
 				E58468671C68C69500A9D8C9 /* Player.swift in Sources */,

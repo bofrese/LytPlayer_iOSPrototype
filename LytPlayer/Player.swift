@@ -11,9 +11,8 @@ import AudioToolbox
 import AVFoundation
 import MediaPlayer
 
+
 /////////// FAKE TEST DATA ////////////////
-var currentBook = memoBook
-var currentPart = 0
 
 
 // TODO: Should be singelton
@@ -21,10 +20,13 @@ var currentPart = 0
 class Player : NSObject, AVAudioPlayerDelegate {
     var isPlaying = false
     var audioPlayer = AVAudioPlayer()
+    var currentBook = memoBook
+    var currentPart = 0
     
     override init() {
         super.init()
         configureRemoteControlEvents()
+        setupCurrentAudioPart()
     }
     
     func pause() {
@@ -32,18 +34,42 @@ class Player : NSObject, AVAudioPlayerDelegate {
         setupAudioActive(false)
         isPlaying = false
     }
+
+    func nextAudioPart() {
+        // TODO: Check for last part...
+        setupCurrentAudioPart( currentPart + 1) { self.play() }
+    }
     
-    func play() {
-        setupAudioActive(true)
-        
-        if let url = currentBook.urlForPart( currentPart ) {
-            try! audioPlayer = AVAudioPlayer(contentsOfURL: url )
-            audioPlayer.delegate = self
-            audioPlayer.play()
-            configureNowPlayingInfo()
+    func previousAudioPart() {
+        setupCurrentAudioPart( max(currentPart - 1, 0) ) { self.play() }
+    }
+    
+    
+    func setupCurrentAudioPart(partNo: Int = 0, success: () -> () = {} ) {
+        if let url = currentBook.urlForPart( partNo ) {
+            let part = currentBook.part(partNo )
+            
+            trimMP3(url, beginSec: part.begin, endSec: part.end ) { trimmedUrl in
+                NSLog("Trimming of current part has completed ****************")
+                do {
+                    try self.audioPlayer = AVAudioPlayer(contentsOfURL: trimmedUrl )
+                    self.audioPlayer.delegate = self
+                    self.currentPart = partNo
+                    success()
+                } catch {
+                        // TODO: ??? can happend on multiple fast click in UI - should be prevented!
+                }
+            }
+            
         } else {
             NSLog("mp3 not found")
         }
+    }
+    func play() {
+        setupAudioActive(true)
+        audioPlayer.play()
+        configureNowPlayingInfo()
+
         isPlaying = true
         NSLog("Player.play() book: \(currentStatus() )")
     }
@@ -186,8 +212,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         NSLog("AVAudioPlayerDelegate audioPlayerDidFinishPlaying book \(currentStatus() )")
         
         // TODO: More logic here to verify next part....
-        currentPart += 1
-        play()
+        nextAudioPart()
     }
     
     @objc func audioPlayerDecodeErrorDidOccur(player: AVAudioPlayer, error: NSError?) {
