@@ -22,7 +22,7 @@ typealias Callback = () -> ()
 class Player : NSObject, AVAudioPlayerDelegate {
     var isPlaying = false
     var audioPlayer = AVAudioPlayer()
-    var currentBook = memoBook
+    var currentBook =  book18716 //  book39657 //  memoBook
     var currentPartNo = 0
     var partSwitchCallback: Callback?
     
@@ -140,19 +140,21 @@ class Player : NSObject, AVAudioPlayerDelegate {
             }
             return .Success
         }
-        /*
+        
         commandCenter.previousTrackCommand.addTargetWithHandler { (event) -> MPRemoteCommandHandlerStatus in
             NSLog("previousTrackCommand \(event.description)")
+            self.previousAudioPart()
             return .Success
         }
         commandCenter.previousTrackCommand.enabled = true
         
         commandCenter.nextTrackCommand.addTargetWithHandler { (event) -> MPRemoteCommandHandlerStatus in
             NSLog("nextTrackCommand \(event.description)")
+            self.nextAudioPart()
             return .Success
         }
         commandCenter.nextTrackCommand.enabled = true
-        */
+        
 
         commandCenter.changePlaybackRateCommand.addTargetWithHandler { (event) -> MPRemoteCommandHandlerStatus in
             NSLog("changePlaybackRateCommand \(event.description)")

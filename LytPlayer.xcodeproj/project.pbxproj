@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E53D6B771C777564004B1535 /* TintinBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D6B761C777564004B1535 /* TintinBook.swift */; };
+		E55947171C77357900810318 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55947161C77357900810318 /* HelperFunctions.swift */; };
+		E55947191C7764C200810318 /* Book18716.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55947181C7764C200810318 /* Book18716.swift */; };
+		E559471B1C776C3800810318 /* 39657 in Resources */ = {isa = PBXBuildFile; fileRef = E559471A1C776C3800810318 /* 39657 */; };
 		E57B9A081C761562001B91FE /* AudioFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B9A071C761562001B91FE /* AudioFunctions.swift */; };
 		E58468571C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
 		E584685B1C68B3CE00A9D8C9 /* 18716 in Resources */ = {isa = PBXBuildFile; fileRef = E584685A1C68B3CE00A9D8C9 /* 18716 */; };
@@ -45,6 +49,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E53D6B761C777564004B1535 /* TintinBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TintinBook.swift; sourceTree = "<group>"; };
+		E55947161C77357900810318 /* HelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		E55947181C7764C200810318 /* Book18716.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Book18716.swift; path = 18716/Book18716.swift; sourceTree = "<group>"; };
+		E559471A1C776C3800810318 /* 39657 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = 39657; path = "../../tmp/Krabben_med_de_gyldne_kløer_daisy/39657"; sourceTree = "<group>"; };
 		E57B9A071C761562001B91FE /* AudioFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFunctions.swift; sourceTree = "<group>"; };
 		E58468561C68B35600A9D8C9 /* MemoBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoBook.swift; sourceTree = "<group>"; };
 		E584685A1C68B3CE00A9D8C9 /* 18716 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = 18716; sourceTree = "<group>"; };
@@ -123,6 +131,7 @@
 				E57B9A071C761562001B91FE /* AudioFunctions.swift */,
 				E5DC248F1C64D16B007105A7 /* AppDelegate.swift */,
 				E5DC24931C64D16B007105A7 /* SecondViewController.swift */,
+				E55947161C77357900810318 /* HelperFunctions.swift */,
 				E58468561C68B35600A9D8C9 /* MemoBook.swift */,
 				E584685E1C68B78A00A9D8C9 /* Book.swift */,
 				E5DC24951C64D16B007105A7 /* Main.storyboard */,
@@ -155,9 +164,12 @@
 		E5DC24C11C64EFA9007105A7 /* TestAudio */ = {
 			isa = PBXGroup;
 			children = (
+				E559471A1C776C3800810318 /* 39657 */,
+				E55947181C7764C200810318 /* Book18716.swift */,
 				E584685A1C68B3CE00A9D8C9 /* 18716 */,
 				E5DC24BF1C64EFA5007105A7 /* 010_FORORD.mp3 */,
 				E5DC24C21C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 */,
+				E53D6B761C777564004B1535 /* TintinBook.swift */,
 			);
 			name = TestAudio;
 			sourceTree = "<group>";
@@ -273,6 +285,7 @@
 			files = (
 				E584685B1C68B3CE00A9D8C9 /* 18716 in Resources */,
 				E5DC24C01C64EFA5007105A7 /* 010_FORORD.mp3 in Resources */,
+				E559471B1C776C3800810318 /* 39657 in Resources */,
 				E5DC249C1C64D16B007105A7 /* LaunchScreen.storyboard in Resources */,
 				E5DC24991C64D16B007105A7 /* Assets.xcassets in Resources */,
 				E5DC24C31C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 in Resources */,
@@ -309,8 +322,11 @@
 				E5DC24901C64D16B007105A7 /* AppDelegate.swift in Sources */,
 				E58468571C68B35600A9D8C9 /* MemoBook.swift in Sources */,
 				E58468671C68C69500A9D8C9 /* Player.swift in Sources */,
+				E55947191C7764C200810318 /* Book18716.swift in Sources */,
 				E584685F1C68B78A00A9D8C9 /* Book.swift in Sources */,
 				E5DC24921C64D16B007105A7 /* FirstViewController.swift in Sources */,
+				E53D6B771C777564004B1535 /* TintinBook.swift in Sources */,
+				E55947171C77357900810318 /* HelperFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
