@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  PlayerViewController.swift
 //  LytPlayer
 //
 //  Created by Bo Frese on 5/2-16.
@@ -12,7 +12,7 @@ import AVFoundation
 import WebKit
 
 
-class FirstViewController: UIViewController, WKNavigationDelegate {
+class PlayerViewController: UIViewController, WKNavigationDelegate {
 
     @IBOutlet weak var webViewPlaceholder: UIView!
     var webView: WKWebView?

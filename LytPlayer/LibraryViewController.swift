@@ -1,5 +1,5 @@
 //
-//  SecondViewController.swift
+//  LibraryViewController.swift
 //  LytPlayer
 //
 //  Created by Bo Frese on 5/2-16.
@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class SecondViewController: UIViewController, WKNavigationDelegate  {
+class LibraryViewController: UIViewController, WKNavigationDelegate  {
 
     @IBOutlet var webViewPlaceholder: UIView!  // WKWebView not available in Storybarod yet....
     var webView: WKWebView?

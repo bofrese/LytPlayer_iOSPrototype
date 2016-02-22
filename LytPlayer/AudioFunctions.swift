@@ -8,11 +8,9 @@
 
 //// TODO: Probably importing too much here....
 import Foundation
-//import AVKit
 import AssetsLibrary
 import AudioToolbox
 import AVFoundation
-//import MediaPlayer
 
 
 func trimMP3(url: NSURL, fileName:String = "currentPlaying.m4a", beginSec: Double = 0.0, endSec: Double, success: (NSURL) -> ()) {
