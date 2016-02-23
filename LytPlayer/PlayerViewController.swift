@@ -14,22 +14,25 @@ import WebKit
 
 class PlayerViewController: UIViewController, WKNavigationDelegate {
 
-    @IBOutlet weak var webViewPlaceholder: UIView!
     var webView: WKWebView?
-    let player = Player()
+    let player = Player.sharedInstance
+
+    // -----------------------------------------------------------------------
+    // MARK: UI Outlets and Actions
+
+    @IBOutlet weak var webViewPlaceholder: UIView!
     @IBOutlet weak var playPauseButton: UIButton!
     
     @IBAction func playButtonPressed(sender: UIButton) {
-        
         if ( player.isPlaying ) {
             player.pause()
         } else {
             player.play()
             self.player.setCallback( { self.scrollToCurrentPart()} )
         }
-        
         updatePlayButton()
     }
+    
     @IBAction func nextButtonPressed(sender: UIButton) {
         player.nextAudioPart()
         scrollToCurrentPart()
@@ -40,18 +43,27 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
         scrollToCurrentPart()
     }
 
+    // -----------------------------------------------------------------------
+    // MARK: Update UI to current state
+    
     func scrollToCurrentPart() {
         if let textId = player.currentPart().textId {
             NSLog("Scroll to textId \(textId)")
-
-            webView?.evaluateJavaScript("window.location.hash = '#\(textId)';", completionHandler: {
-                (obj: AnyObject?, err: NSError?) in
-                if let error = err {
-                  NSLog("scroll failed \(error)")
-                } else {
-                    NSLog("Scroll succeeded?")
-                }
-            } )
+            
+            if let isLoading = webView?.loading where isLoading == true {
+                // TODO: Scroll after view has loaded....
+                NSLog("We can not scroll when the view is still loading")
+            } else {
+                webView?.evaluateJavaScript("window.location.hash = '#\(textId)';", completionHandler: {
+                    (obj: AnyObject?, err: NSError?) in
+                    if let error = err {
+                        NSLog("scroll failed \(error)")
+                    } else {
+                        NSLog("Scroll succeeded?")
+                    }
+                    
+                } )
+            }
         } else {
             NSLog("No textId defined for part")
         }
@@ -60,6 +72,12 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
     func updatePlayButton() {
         let buttonTitle = ( player.isPlaying ? "Pause" : "Play")
         playPauseButton.setTitle(buttonTitle, forState: .Normal)
+    }
+
+    // Update the play/pause button state when re-emerging from the background.
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        updatePlayButton()
     }
 
     override func viewDidLoad() {
@@ -79,29 +97,13 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
         self.webViewPlaceholder.addSubview(self.webView!)
         self.webView?.navigationDelegate = self
         self.webView?.allowsBackForwardNavigationGestures = true
-
         
-            /*
-        if let url = urlForFile( "18716.htm" ) {
-            let request = NSURLRequest(URL: url)
-            webView?.loadRequest(request)
-            webView?.evaluateJavaScript("window.location.hash = '#pmsu00099';", completionHandler: { (obj: AnyObject?, err: NSError?) in  NSLog("scroll failed")} )
-            
-        }
-*/
-
-        
-        
+        // TODO: Hardcoded content file name, should be taken from Book info.
         if let path = NSBundle.mainBundle().pathForResource( "18716/18716" , ofType: "htm") {
             let url  = NSURL.fileURLWithPath(path)
             let request = NSURLRequest(URL: url)
             webView?.loadRequest(request)
-            /*
-            webView?.evaluateJavaScript("window.location.hash = '#pmsu00099';", completionHandler: { (obj: AnyObject?, err: NSError?) in  NSLog("scroll failed")} )
-            */
         }
-        
-        
     }
 
     // TODO: Not used - cleanup....
@@ -116,15 +118,10 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
         return url
     }
     
-
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        updatePlayButton()
-    }
-    
-    // ............ WKNavigationDelegate ................
+    // --------------------------------------------------------------------------
+    // MARK: - WKNavigationDelegate
+    // Handle user clikking on links in the webivew used to display book content.
     
     // Start the network activity indicator when the web view is loading
     func webView(webView: WKWebView,didStartProvisionalNavigation navigation: WKNavigation){
@@ -134,9 +131,10 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
     // Stop the network activity indicator when the loading finishes
     func webView(webView: WKWebView,didFinishNavigation navigation: WKNavigation){
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        scrollToCurrentPart()
     }
-
-    // Policy when clicking the link
+    
+    // Policy when clicking the link - Links like 'filename.smil#id' should change audio player to relevant section.
     func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
         NSLog("webView decidePolicyForNavigationAction... ")
         //NSLog( navigationAction.description)
@@ -161,7 +159,7 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
         }
     }
     
-    // Policy after we got the response
+    // Policy after we got the response - Just allow everything.... (we could remove this method)
     func webView(webView: WKWebView,
         decidePolicyForNavigationResponse navigationResponse: WKNavigationResponse,decisionHandler: ((WKNavigationResponsePolicy) -> Void)){
             NSLog("webView decidePolicyForNavigationResponse....")
@@ -169,7 +167,9 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
             decisionHandler(.Allow)
     }
     
-    ///////////// Autogenerated Boilerplate code ........////////////////////////
+    
+    // ----------------------------------------------------------------------------------------------------
+    // Autogenerated Boilerplate code (not touched yet)........
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

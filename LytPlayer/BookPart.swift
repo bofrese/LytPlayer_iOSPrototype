@@ -8,6 +8,8 @@
 
 import Foundation
 
+// Represents a part, or section in the book. Links one text file to one audio file.
+// TODO: In SMIL files we can have multiple audio parts to one text file.
 class BookPart {
     var file: String
     var begin: Double

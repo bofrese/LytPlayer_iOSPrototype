@@ -12,28 +12,30 @@ import AVFoundation
 import MediaPlayer
 
 
-/////////// FAKE TEST DATA ////////////////
 
-
-// TODO: Should be singelton
+// Singelton! Use  player = Player.sharedInstance
 
 typealias Callback = () -> ()
 
 class Player : NSObject, AVAudioPlayerDelegate {
+    
     var isPlaying = false
     var audioPlayer = AVAudioPlayer()
     var currentBook =  book18716 //  book39657 //  memoBook
     var currentPartNo = 0
-    var partSwitchCallback: Callback?
+    var newPartCallback: Callback?
     
-    override init() {
+    
+    static let sharedInstance = Player()
+    private override init() {
         super.init()
         configureRemoteControlEvents()
         setupCurrentAudioPart()
     }
     
+    // Call this callback when changing to a new BookPart (to update UI f.ex.)
     func setCallback( cb: Callback) {
-        partSwitchCallback = cb
+        newPartCallback = cb
     }
     
     func pause() {
@@ -42,9 +44,17 @@ class Player : NSObject, AVAudioPlayerDelegate {
         isPlaying = false
     }
 
+    func stop() {
+        audioPlayer.stop()
+        isPlaying = false
+    }
+
     func nextAudioPart() {
-        // TODO: Check for last part...
-        setupCurrentAudioPart( currentPartNo + 1) { self.play() }
+        if ( currentPartNo < currentBook.parts.count ) {
+            setupCurrentAudioPart( currentPartNo + 1) { self.play() }
+        } else {
+            audioPlayer.stop()
+        }
     }
     
     func previousAudioPart() {
@@ -56,6 +66,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
             setupCurrentAudioPart( partNo ) { self.play() }
         } else {
             NSLog("partId \(partId) not found")
+            // TODO: More errorhandling.....
         }
     }
     func currentPart() -> BookPart {
@@ -73,7 +84,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
                     try self.audioPlayer = AVAudioPlayer(contentsOfURL: trimmedUrl )
                     self.audioPlayer.delegate = self
                     self.currentPartNo = partNo
-                    self.partSwitchCallback?()
+                    self.newPartCallback?()
                     success()
                 } catch {
                         // TODO: ??? can happend on multiple fast click in UI - should be prevented!
@@ -99,24 +110,31 @@ class Player : NSObject, AVAudioPlayerDelegate {
         return status
     }
     
-    
+    // Now playing info is showed on the lock screen and the controll center.
     func configureNowPlayingInfo() {
         let infoCenter = MPNowPlayingInfoCenter.defaultCenter()
         infoCenter.nowPlayingInfo = [
-            // MPMediaItemPropertyMediaType: MPMediaType.AudioBook, // TODO
+            // MPMediaItemPropertyMediaType: MPMediaType.AudioBook, // Not sure we need this, ot what it does....
             MPMediaItemPropertyAlbumArtist: currentBook.author,
-            MPMediaItemPropertyAlbumTitle: currentBook.parts[ currentPartNo].file, // TODO: Subtitle?
+            MPMediaItemPropertyAlbumTitle: currentBook.parts[ currentPartNo].file, // TODO: Subtitle? Section title?
             MPMediaItemPropertyTitle: currentBook.title,
             MPNowPlayingInfoPropertyChapterNumber: currentPartNo,
             MPNowPlayingInfoPropertyChapterCount : currentBook.parts.count,
             MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: currentBook.coverImage() ),
             MPMediaItemPropertyPlaybackDuration: currentBook.duration,
-            MPMediaItemPropertyAlbumTrackNumber: 4, // TODO
+            MPMediaItemPropertyAlbumTrackNumber: currentPartNo, // What is the difference between Chapter and Track number? Which should we use?
             MPNowPlayingInfoPropertyPlaybackRate: 1.0,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: currentBook.position,
         ]
     }
     
+    
+    // Configure playback control from the remote control center. 
+    // Visible when swiping up from the bottom even when other Apps are in the forground,
+    // and on the lockscreen while this App is the 'NowPlaying' App.
+    // NOTE: There are apparently limit to how many events that can be controlled (3?). 
+    //       defining any more, will not make them show in the controll center, but they will
+    //       still work via f.ex.  the headset remote controll events (if applicable)
     func configureRemoteControlEvents() {
         NSLog("Player.configureRemoteControlEvents()... ")
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
@@ -205,13 +223,10 @@ class Player : NSObject, AVAudioPlayerDelegate {
         }
         commandCenter.bookmarkCommand.enabled = false
         */
-
-    
-        
     }
     
     
-    // Return true or false, is successfull or not.
+    // Return true or false, if successfull or not.
     func setupAudioActive(active: Bool) -> Bool {
         var success = false
         let audioSession = AVAudioSession.sharedInstance()
@@ -221,13 +236,13 @@ class Player : NSObject, AVAudioPlayerDelegate {
             success = true
         } catch {
             NSLog("Error setting AudioSession")
+            // TODO: More error handling?
         }
         return success
     }
     
-    
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //#pragma mark AVAudioPlayerDelegate
+    // -------------------------------------------------------------------------------------------------
+    // MARK: - AVAudioPlayerDelegate - Deal with (background) playback events
     
     @objc func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
         NSLog("AVAudioPlayerDelegate audioPlayerDidFinishPlaying book \(currentStatus() )")

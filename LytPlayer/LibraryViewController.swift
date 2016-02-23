@@ -2,12 +2,16 @@
 //  LibraryViewController.swift
 //  LytPlayer
 //
+//  View to provide access to a webbased interface to the local library.
+//  Intercepts URLS to listen to and download books
+//
 //  Created by Bo Frese on 5/2-16.
 //  Copyright © 2016 nota.dk. All rights reserved.
 //
 
 import UIKit
 import WebKit
+
 
 class LibraryViewController: UIViewController, WKNavigationDelegate  {
 
@@ -20,11 +24,8 @@ class LibraryViewController: UIViewController, WKNavigationDelegate  {
         super.viewWillAppear(animated)
     }
     
-    // ............ WKNavigationDelegate ................
+    // MARK: WKNavigationDelegate ................
     
-    // TODO: Intercept the following URL's.....
-    // Afspil bog:  http://m.e17.dk/embedded/#book-player?book=37827
-    // Download bog: http://zipit.e17.dk/ZipIt/get.aspx?session=10142992&book=37827&option=daisy
     
     
     /* Start the network activity indicator when the web view is loading */
@@ -43,8 +44,11 @@ class LibraryViewController: UIViewController, WKNavigationDelegate  {
             NSLog(navigationResponse.response.description)
             decisionHandler(.Allow)
     }
-    
-    // Policy when clicking the link
+
+    // Policy when clicking a link
+    // Intercept the following URL's.....
+    // Afspil bog:  http://m.e17.dk/embedded/#book-player?book=37827
+    // Download bog: http://zipit.e17.dk/ZipIt/get.aspx?session=10142992&book=37827&option=daisy
     func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
         NSLog("webView decidePolicyForNavigationAction... ")
         NSLog( navigationAction.description)
@@ -99,12 +103,10 @@ class LibraryViewController: UIViewController, WKNavigationDelegate  {
     
     
     
-    
+    // Create a WKWebView and load the local library
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view, typically from a nib.
-
         let prefs = WKPreferences()
         let conf = WKWebViewConfiguration()
         prefs.javaScriptCanOpenWindowsAutomatically = true
@@ -116,16 +118,12 @@ class LibraryViewController: UIViewController, WKNavigationDelegate  {
         self.webView?.allowsBackForwardNavigationGestures = true
         self.webViewPlaceholder.addSubview(self.webView!)
         
-        // https://nota.dk/bibliotek
-        // http://m.e17.dk/  ?
         if let startUrl = NSURL(string:"https://nota.dk/bibliotek") {
             let request = NSURLRequest(URL: startUrl)
             webView?.loadRequest(request)
             webView?.navigationDelegate = self
             webView?.allowsBackForwardNavigationGestures = true
         }
-
-    
     }
 
     override func didReceiveMemoryWarning() {

@@ -33,7 +33,7 @@ func trimMP3(url: NSURL, fileName:String = "currentPlaying.m4a", beginSec: Doubl
         /// Ignore....
     }
     
-    
+    // TODO: Make it export MP3 instead.
     if let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A) {
         exporter.outputFileType =  AVFileTypeAppleM4A // AVFileTypeMPEGLayer3
         exporter.outputURL = trimmedSoundFileURL

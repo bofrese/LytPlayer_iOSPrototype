@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 
+// Not realy used yet....
 protocol Playable {
     
 }
@@ -37,8 +38,9 @@ class Book: Playable {
     }
     
     func calculateDuration() -> Int {
-        return 22000 // TODO
+        return 22000 // TODO: Calculate duration of the entire book
     }
+    
     func urlForPart( partNumber: Int ) -> NSURL? {
         var url : NSURL?
         let part = parts[ partNumber]
@@ -49,9 +51,11 @@ class Book: Playable {
         
         return url
     }
+    
     func part( partNumber: Int ) -> BookPart {
         return parts[ partNumber]
     }
+    
     func partNoForId( partId: String ) -> Int? {
         
         for idx in 0..<parts.count {
@@ -72,10 +76,6 @@ class Book: Playable {
             coverImg = UIImage(contentsOfFile: path);
         }
 
-        // TODO: Fix this !
-        //let coverImg = UIImage(contentsOfFile: self.cover);
-
         return coverImg!
     }
-
 }
