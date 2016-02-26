@@ -10,18 +10,32 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
-                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                        <viewControllerLayoutGuide type="top" id="ECR-Hm-Ops"/>
+                        <viewControllerLayoutGuide type="bottom" id="bm7-VO-j0p"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nota_logo.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="SRi-gv-eUH">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="SRi-gv-eUH" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="14H-pN-q2S"/>
+                            <constraint firstItem="bm7-VO-j0p" firstAttribute="top" secondItem="SRi-gv-eUH" secondAttribute="bottom" id="QKD-2c-czJ"/>
+                            <constraint firstAttribute="trailing" secondItem="SRi-gv-eUH" secondAttribute="trailing" id="eye-1t-fZB"/>
+                            <constraint firstItem="SRi-gv-eUH" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="oex-RM-yRC"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="439" y="274"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="nota_logo.jpg" width="600" height="300"/>
+    </resources>
 </document>

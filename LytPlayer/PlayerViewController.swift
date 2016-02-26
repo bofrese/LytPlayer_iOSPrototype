@@ -24,11 +24,11 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
     @IBOutlet weak var playPauseButton: UIButton!
     
     @IBAction func playButtonPressed(sender: UIButton) {
-        if ( player.isPlaying ) {
+        if ( player.isPlaying() ) {
             player.pause()
         } else {
             player.play()
-            self.player.setCallback( { self.scrollToCurrentPart()} )
+            self.player.whenNewPart( { self.scrollToCurrentPart()} )
         }
         updatePlayButton()
     }
@@ -70,7 +70,7 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
     }
     
     func updatePlayButton() {
-        let buttonTitle = ( player.isPlaying ? "Pause" : "Play")
+        let buttonTitle = ( player.isPlaying() ? "Pause" : "Play")
         playPauseButton.setTitle(buttonTitle, forState: .Normal)
     }
 
@@ -88,7 +88,7 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
         let conf = WKWebViewConfiguration()
         prefs.javaScriptCanOpenWindowsAutomatically = true
         prefs.javaScriptEnabled = true
-        //prefs.minimumFontSize = 30  // No effect????
+        prefs.minimumFontSize = 30  // No effect????
         conf.preferences = prefs
         
         self.webView = WKWebView(frame: self.webViewPlaceholder.bounds, configuration: conf) // instantiate WKWebView
@@ -99,7 +99,8 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
         self.webView?.allowsBackForwardNavigationGestures = true
         
         // TODO: Hardcoded content file name, should be taken from Book info.
-        if let path = NSBundle.mainBundle().pathForResource( "18716/18716" , ofType: "htm") {
+        //if let path = NSBundle.mainBundle().pathForResource( "18716/18716" , ofType: "htm") {
+        if let path = NSBundle.mainBundle().pathForResource( "37723/main" , ofType: "html") {
             let url  = NSURL.fileURLWithPath(path)
             let request = NSURLRequest(URL: url)
             webView?.loadRequest(request)

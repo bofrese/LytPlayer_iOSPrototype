@@ -7,18 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E53D6B771C777564004B1535 /* TintinBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D6B761C777564004B1535 /* TintinBook.swift */; };
+		E50D2CDD1C7CA4B600306745 /* 37723 in Resources */ = {isa = PBXBuildFile; fileRef = E50D2CDC1C7CA4B600306745 /* 37723 */; };
+		E50D2CDF1C7CA5B300306745 /* Book37723.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50D2CDE1C7CA5B300306745 /* Book37723.swift */; };
 		E55947171C77357900810318 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55947161C77357900810318 /* HelperFunctions.swift */; };
-		E55947191C7764C200810318 /* Book18716.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55947181C7764C200810318 /* Book18716.swift */; };
-		E559471B1C776C3800810318 /* 39657 in Resources */ = {isa = PBXBuildFile; fileRef = E559471A1C776C3800810318 /* 39657 */; };
 		E57B9A081C761562001B91FE /* AudioFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B9A071C761562001B91FE /* AudioFunctions.swift */; };
-		E58468571C68B35600A9D8C9 /* MemoBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468561C68B35600A9D8C9 /* MemoBook.swift */; };
-		E584685B1C68B3CE00A9D8C9 /* 18716 in Resources */ = {isa = PBXBuildFile; fileRef = E584685A1C68B3CE00A9D8C9 /* 18716 */; };
-		E584685C1C68B3CE00A9D8C9 /* 18716 in Resources */ = {isa = PBXBuildFile; fileRef = E584685A1C68B3CE00A9D8C9 /* 18716 */; };
-		E584685D1C68B3CE00A9D8C9 /* 18716 in Resources */ = {isa = PBXBuildFile; fileRef = E584685A1C68B3CE00A9D8C9 /* 18716 */; };
 		E584685F1C68B78A00A9D8C9 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584685E1C68B78A00A9D8C9 /* Book.swift */; };
 		E58468631C68B7B400A9D8C9 /* BookPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468621C68B7B400A9D8C9 /* BookPart.swift */; };
 		E58468671C68C69500A9D8C9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58468661C68C69500A9D8C9 /* Player.swift */; };
+		E58C7D711C7DD38400636DCC /* nota_logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E58C7D701C7DD38400636DCC /* nota_logo.jpg */; };
 		E5DC24901C64D16B007105A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC248F1C64D16B007105A7 /* AppDelegate.swift */; };
 		E5DC24921C64D16B007105A7 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24911C64D16B007105A7 /* PlayerViewController.swift */; };
 		E5DC24941C64D16B007105A7 /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24931C64D16B007105A7 /* LibraryViewController.swift */; };
@@ -27,8 +23,7 @@
 		E5DC249C1C64D16B007105A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5DC249A1C64D16B007105A7 /* LaunchScreen.storyboard */; };
 		E5DC24A71C64D16B007105A7 /* LytPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24A61C64D16B007105A7 /* LytPlayerTests.swift */; };
 		E5DC24B21C64D16B007105A7 /* LytPlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC24B11C64D16B007105A7 /* LytPlayerUITests.swift */; };
-		E5DC24C01C64EFA5007105A7 /* 010_FORORD.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E5DC24BF1C64EFA5007105A7 /* 010_FORORD.mp3 */; };
-		E5DC24C31C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E5DC24C21C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 */; };
+		E5FBACDD1C7DBB5D00AA54DC /* BookshelfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FBACDC1C7DBB5D00AA54DC /* BookshelfViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,16 +44,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E53D6B761C777564004B1535 /* TintinBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TintinBook.swift; sourceTree = "<group>"; };
+		E50D2CDC1C7CA4B600306745 /* 37723 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = 37723; sourceTree = "<group>"; };
+		E50D2CDE1C7CA5B300306745 /* Book37723.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book37723.swift; sourceTree = "<group>"; };
 		E55947161C77357900810318 /* HelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
-		E55947181C7764C200810318 /* Book18716.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Book18716.swift; path = 18716/Book18716.swift; sourceTree = "<group>"; };
-		E559471A1C776C3800810318 /* 39657 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = 39657; path = "../../tmp/Krabben_med_de_gyldne_kløer_daisy/39657"; sourceTree = "<group>"; };
 		E57B9A071C761562001B91FE /* AudioFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFunctions.swift; sourceTree = "<group>"; };
-		E58468561C68B35600A9D8C9 /* MemoBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoBook.swift; sourceTree = "<group>"; };
-		E584685A1C68B3CE00A9D8C9 /* 18716 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = 18716; sourceTree = "<group>"; };
 		E584685E1C68B78A00A9D8C9 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		E58468621C68B7B400A9D8C9 /* BookPart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookPart.swift; sourceTree = "<group>"; };
 		E58468661C68C69500A9D8C9 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		E58C7D701C7DD38400636DCC /* nota_logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = nota_logo.jpg; sourceTree = "<group>"; };
 		E5DC248C1C64D16B007105A7 /* LytPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LytPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5DC248F1C64D16B007105A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5DC24911C64D16B007105A7 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
@@ -73,8 +66,7 @@
 		E5DC24AD1C64D16B007105A7 /* LytPlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LytPlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5DC24B11C64D16B007105A7 /* LytPlayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LytPlayerUITests.swift; sourceTree = "<group>"; };
 		E5DC24B31C64D16B007105A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E5DC24BF1C64EFA5007105A7 /* 010_FORORD.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 010_FORORD.mp3; sourceTree = "<group>"; };
-		E5DC24C21C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 008_ET__DEN_MEST_INTELLI.mp3; sourceTree = "<group>"; };
+		E5FBACDC1C7DBB5D00AA54DC /* BookshelfViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookshelfViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,14 +117,15 @@
 		E5DC248E1C64D16B007105A7 /* LytPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				E58C7D701C7DD38400636DCC /* nota_logo.jpg */,
 				E5DC24C11C64EFA9007105A7 /* TestAudio */,
 				E5DC24911C64D16B007105A7 /* PlayerViewController.swift */,
 				E58468661C68C69500A9D8C9 /* Player.swift */,
 				E57B9A071C761562001B91FE /* AudioFunctions.swift */,
 				E5DC248F1C64D16B007105A7 /* AppDelegate.swift */,
 				E5DC24931C64D16B007105A7 /* LibraryViewController.swift */,
+				E5FBACDC1C7DBB5D00AA54DC /* BookshelfViewController.swift */,
 				E55947161C77357900810318 /* HelperFunctions.swift */,
-				E58468561C68B35600A9D8C9 /* MemoBook.swift */,
 				E584685E1C68B78A00A9D8C9 /* Book.swift */,
 				E5DC24951C64D16B007105A7 /* Main.storyboard */,
 				E5DC24981C64D16B007105A7 /* Assets.xcassets */,
@@ -164,12 +157,8 @@
 		E5DC24C11C64EFA9007105A7 /* TestAudio */ = {
 			isa = PBXGroup;
 			children = (
-				E559471A1C776C3800810318 /* 39657 */,
-				E55947181C7764C200810318 /* Book18716.swift */,
-				E584685A1C68B3CE00A9D8C9 /* 18716 */,
-				E5DC24BF1C64EFA5007105A7 /* 010_FORORD.mp3 */,
-				E5DC24C21C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 */,
-				E53D6B761C777564004B1535 /* TintinBook.swift */,
+				E50D2CDE1C7CA5B300306745 /* Book37723.swift */,
+				E50D2CDC1C7CA4B600306745 /* 37723 */,
 			);
 			name = TestAudio;
 			sourceTree = "<group>";
@@ -283,12 +272,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E584685B1C68B3CE00A9D8C9 /* 18716 in Resources */,
-				E5DC24C01C64EFA5007105A7 /* 010_FORORD.mp3 in Resources */,
-				E559471B1C776C3800810318 /* 39657 in Resources */,
+				E50D2CDD1C7CA4B600306745 /* 37723 in Resources */,
 				E5DC249C1C64D16B007105A7 /* LaunchScreen.storyboard in Resources */,
+				E58C7D711C7DD38400636DCC /* nota_logo.jpg in Resources */,
 				E5DC24991C64D16B007105A7 /* Assets.xcassets in Resources */,
-				E5DC24C31C64EFD2007105A7 /* 008_ET__DEN_MEST_INTELLI.mp3 in Resources */,
 				E5DC24971C64D16B007105A7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,7 +284,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E584685C1C68B3CE00A9D8C9 /* 18716 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,7 +291,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E584685D1C68B3CE00A9D8C9 /* 18716 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,13 +305,12 @@
 				E58468631C68B7B400A9D8C9 /* BookPart.swift in Sources */,
 				E57B9A081C761562001B91FE /* AudioFunctions.swift in Sources */,
 				E5DC24901C64D16B007105A7 /* AppDelegate.swift in Sources */,
-				E58468571C68B35600A9D8C9 /* MemoBook.swift in Sources */,
 				E58468671C68C69500A9D8C9 /* Player.swift in Sources */,
-				E55947191C7764C200810318 /* Book18716.swift in Sources */,
 				E584685F1C68B78A00A9D8C9 /* Book.swift in Sources */,
 				E5DC24921C64D16B007105A7 /* PlayerViewController.swift in Sources */,
-				E53D6B771C777564004B1535 /* TintinBook.swift in Sources */,
+				E5FBACDD1C7DBB5D00AA54DC /* BookshelfViewController.swift in Sources */,
 				E55947171C77357900810318 /* HelperFunctions.swift in Sources */,
+				E50D2CDF1C7CA5B300306745 /* Book37723.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

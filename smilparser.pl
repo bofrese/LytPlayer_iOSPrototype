@@ -32,7 +32,7 @@ my $book = {
   ###### Stuff not yet parsed ....... :-(
   id => $ARGV[0] || 1234,
   author =>  $ARGV[1] || "Unknown Author",
-  cover => "18716/18716_h512",
+  cover => "nota_logo.jpg", # "18716/18716_h512",
   duration => 22899,
   ##################################
   parts => [],
@@ -135,9 +135,9 @@ sub generate_swift
   let book$book->{id} = Book(
     id: $book->{id},
     author: "$book->{author}" ,
+    title: "$book->{title}" ,
     cover: "$book->{cover}" ,
     duration: $book->{duration},
-    title: "$book->{title}" ,
     parts: [
     |;
 
