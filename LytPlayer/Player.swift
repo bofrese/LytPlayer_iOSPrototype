@@ -11,11 +11,13 @@ import AudioToolbox
 import AVFoundation
 import MediaPlayer
 
+// Convenience types and functions .......
 typealias Callback = () -> ()
+
 
 /*
 Player:
-This class is responsible for all interaction with the Audio layer in iOS. 
+This class is responsible for all interaction with the Audio layer in iOS.
 No other classes should have any knowledge of which underlying audio playing framework is used!
 
 This is a  Singelton! Use :
@@ -27,6 +29,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     var currentBook = book37723 // book18716 //  book39657 //  memoBook
     var currentPartNo = 0
     var newPartCallback: Callback?
+    let observerManager = ObserverManager() // For KVO - see: https://github.com/timbodeit/ObserverManager
     
     // ----------------------------------------------------------------------------------------------
     // MARK: - Public API ............
@@ -45,6 +48,27 @@ class Player : NSObject, AVAudioPlayerDelegate {
     }
 
     func play() {
+        NSLog("\(__FUNCTION__)()...")
+
+        // Verify that we are ready to play....
+        if ( audioPlayer.status == .ReadyToPlay ) {
+            NSLog("Player is READY")
+            if let status = audioPlayer.currentItem?.status {
+                switch status  {
+                case AVPlayerItemStatus.ReadyToPlay :
+                    NSLog("CurrentItem is READY")
+                case AVPlayerItemStatus.Failed :
+                    NSLog("CurrentItem is READY")
+                default :
+                    NSLog("CurrentItem is in an unkknown state...")
+                }
+            } else {
+                NSLog("Player currentItem is in trouble: \(audioPlayer.currentItem.debugDescription)")
+            }
+        } else {
+            NSLog("*** Player is NOT READY : \(audioPlayer.error?.localizedDescription) ***")
+        }
+        
         setupAudioActive(true)
         audioPlayer.play()
         configureNowPlayingInfo()
@@ -52,12 +76,19 @@ class Player : NSObject, AVAudioPlayerDelegate {
     }
 
     func pause() {
+        NSLog("\(__FUNCTION__)()...")
+
         audioPlayer.pause()
         setupAudioActive(false)
     }
 
     func stop() {
+        NSLog("\(__FUNCTION__)()...")
+
         audioPlayer.pause() // TODO: AVPlayer does not have a stop method
+        self.observerManager.deregisterAllObservers()
+        self.audioPlayer.removeAllItems()
+        
     }
 
     func isPlaying() -> Bool
@@ -74,20 +105,25 @@ class Player : NSObject, AVAudioPlayerDelegate {
     }
     
     func nextAudioFile() {
-        let currentFile = self.currentPart().file
-        var newFile = currentFile
-        var newPartNo = currentPartNo + 1
+        if let newPartNo = partNoForNextAudioFile(currentPartNo) {
+            setupCurrentAudioPart( newPartNo) { self.play() }
+        }
+    }
+    
+    func partNoForNextAudioFile( startNo: Int ) -> Int? {
+        let startFile = currentBook.part(startNo).file
+        var newFile = startFile
+        var newPartNo = startNo + 1
         while ( newPartNo < currentBook.parts.count ) { // TODO: Shouldnt access parts directly?
             newFile = currentBook.part(newPartNo).file
-            if ( newFile != currentFile ) {
-                setupCurrentAudioPart( newPartNo) { self.play() }
-                return
+            if ( newFile != startFile ) {
+                return newPartNo
             } else {
                 newPartNo += 1
             }
         }
+        return nil
     }
-    
     
     func previousAudioPart() {
         setupCurrentAudioPart( max(currentPartNo - 1, 0) ) { self.play() }
@@ -110,6 +146,72 @@ class Player : NSObject, AVAudioPlayerDelegate {
     
     func setupCurrentAudioPart(partNo: Int = 0, success: () -> () = {} ) {
         NSLog("setupCurrentAudioPart( \(partNo)) ...")
+        
+        
+        // ................ EXPERIMENTAL QUEUE PLAYER ...................
+        
+        self.observerManager.deregisterAllObservers()
+        self.audioPlayer.removeAllItems()
+        var playerItems: [AVPlayerItem] = []
+
+        // FIXME: Write this in a more swifty way.....
+        var newPartNo = partNo
+        repeat {
+            if let url = currentBook.remoteUrlForPart( newPartNo ) {
+                NSLog("Add to Queue: \(url.lastPathComponent) from URL: \(url)")
+                let item = AVPlayerItem(URL: url)
+                
+                item.whenChanging("status", manager: observerManager ) { item in
+                    NSLog("--> New status for PlayerItem asset: \(item.asset.debugDescription) Status=\(item.status.rawValue)")
+                    if let error = item.error {
+                        NSLog("--- Item Error: \(error.localizedDescription) reason: \(error.localizedFailureReason) - UserInfo: \(error.userInfo.debugDescription)")
+                        if ( error.code == NSURLErrorUserAuthenticationRequired ) { // Error codes: http://nshipster.com/nserror/
+                            NSLog("*** Authentication Required !!!! ***")
+                            // TODO: Callback to UI ? Deal with Authentication .....
+                            // TODO: Remember where we where. Check if something is playing? (then what??)
+                            self.stop()
+                        }
+                    }
+                }
+
+                item.whenChanging("loadedTimeRanges", manager: observerManager ) { item in
+                    NSLog("--> New loadedTimeRanges for PlayerItem: \(item.asset.debugDescription) LoadedRange=\(item.loadedTimeRanges.debugDescription)")
+                }
+                
+                playerItems.append(item)
+            }
+            if let no =  partNoForNextAudioFile(newPartNo) {
+                newPartNo = no
+            } else {
+                newPartNo = -1
+            }
+        } while ( newPartNo > 0 )
+
+        if let firstItem = playerItems.first {
+            self.listenForEndOfAudio(firstItem)
+        }
+        
+        audioPlayer = AVQueuePlayer(items: playerItems)
+        setupAudioPlayerObservers()
+        self.newPartCallback?()
+        success()
+        return // ........................ END EXPERIMENT ..............
+        ////////////////////////////////////////////////////////////////
+    
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         // ............. LOCAL AUDIO ..................
         if let url = currentBook.localUrlForPart( partNo ) {
@@ -162,6 +264,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     
     // Now playing info is showed on the lock screen and the controll center.
     func configureNowPlayingInfo() {
+        NSLog("\(__FUNCTION__)()...")
         let infoCenter = MPNowPlayingInfoCenter.defaultCenter()
         infoCenter.nowPlayingInfo = [
             // MPMediaItemPropertyMediaType: MPMediaType.AudioBook, // Not sure we need this, ot what it does....
@@ -186,7 +289,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     //       defining any more, will not make them show in the controll center, but they will
     //       still work via f.ex.  the headset remote controll events (if applicable)
     func configureRemoteControlEvents() {
-        NSLog("Player.configureRemoteControlEvents()... ")
+        NSLog("\(__FUNCTION__)()...")
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
         commandCenter.playCommand.addTargetWithHandler { (event) -> MPRemoteCommandHandlerStatus in
             NSLog("playCommand")
@@ -280,6 +383,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     
     // Return true or false, if successfull or not.
     func setupAudioActive(active: Bool) -> Bool {
+        NSLog("\(__FILE__).\(__FUNCTION__)( \(active) )...")
         var success = false
         let audioSession = AVAudioSession.sharedInstance()
         do {
@@ -287,7 +391,8 @@ class Player : NSObject, AVAudioPlayerDelegate {
             try audioSession.setActive(active, withOptions: .NotifyOthersOnDeactivation ) // ??? Options
             
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "audioSessionInterrupted", name: AVAudioSessionInterruptionNotification, object: audioSession)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "audioSessionRouteChanged", name: AVAudioSessionRouteChangeNotification, object: audioSession)
+            
+            // TODO: Broken: NSNotificationCenter.defaultCenter().addObserver(self, selector: "audioSessionRouteChanged", name: AVAudioSessionRouteChangeNotification, object: audioSession)
 
             success = true
 
@@ -308,9 +413,38 @@ class Player : NSObject, AVAudioPlayerDelegate {
     }
     
     
+    
     // -----------------------------------------------------------------------------------------------------
     // MARK: AVQueuePlayer Events 
 
+    // Setup Observers for AVQueuePlayer
+    func setupAudioPlayerObservers() {
+
+        audioPlayer.whenChanging("currentItem") { player in
+            NSLog("->-> AudioPlayer new current item \(player.currentItem?.asset.debugDescription)")
+        }
+        audioPlayer.whenChanging("status") { player in
+                NSLog("------ Got new status \(player.status.rawValue)")
+            switch( player.status) {
+            case .Failed :
+                NSLog("*** Player Failed!")
+            case .ReadyToPlay :
+                NSLog("+++ Player is ready to play!")
+            case .Unknown :
+                NSLog("??? Player is in UNKNOWN state ???")
+            }
+        }
+        audioPlayer.whenChanging("rate") { player in
+            let playingState = ( player.rate > 0 ? "Playing" : "Paused")
+            NSLog("->-> Got new rate \(player.rate) - Player is \(playingState)" )
+        }
+    }
+    func removeAudioPlayerObservers() {
+        ObserverManager.sharedInstance.deregisterObserversForObject(audioPlayer)
+    }
+
+    
+    
     // Setup callbacks.
     func listenForEndOfAudio( audio: AVPlayerItem ) {
         let center = NSNotificationCenter.defaultCenter()
@@ -325,7 +459,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         // (The Apps AudioSession has been deactivated by the system? 
         // - Adjust App settings accordingly - Pause AVQueuuePlayer, adjust UI?
         // TODO: Do we get both an interrupt begin and and interrupt end event?
-        NSLog("AVAudioSessionInterruptionNotification interruption received: \(notification)")
+        NSLog("*** AVAudioSessionInterruptionNotification interruption received: \(notification)")
         
     }
 
@@ -334,15 +468,16 @@ class Player : NSObject, AVAudioPlayerDelegate {
     func audioSessionRouteChanged(notification:NSNotification)
     {
         // TODO: Deal with route change - Unplug headset should pause audio (according to Apple HIG)
-        NSLog("AVAudioSessionRouteChangeNotification interruption received: \(notification)")
+        NSLog("*** AVAudioSessionRouteChangeNotification interruption received: \(notification)")
     }
 
     
     // Called back from AVQueuePlayer on AVPlayerItemDidPlayToEndTimeNotification
     func endOfAudio() {
-        NSLog("AVPlayerItemDidPlayToEndTimeNotification received...")
+        NSLog("------ END OF ITEM!!!!! ----- AVPlayerItemDidPlayToEndTimeNotification received...")
         //self.nextAudioPart()
-        self.nextAudioFile() // Skip parts until its a new mp3 file
+        NSLog("****************** nextAudioFile DISABLED *********************")
+        // TODO: self.nextAudioFile() // Skip parts until its a new mp3 file
     }
 
     
@@ -373,5 +508,20 @@ class Player : NSObject, AVAudioPlayerDelegate {
     }
     
 }
+
+/* TODO: Try this..... - to add meta data about BookPart to AVPlayerItems
+
+class BookPartPlayerItem : AVPlayerItem  {
+    var bookPart: BookPart
+    
+    //                 let item = AVPlayerItem(URL: url)
+
+    init(url: NSURL, bookPart: BookPart) {
+        super.init(URL: url)
+        self.bookPart = bookPart
+    }
+}
+
+*/
 
 
