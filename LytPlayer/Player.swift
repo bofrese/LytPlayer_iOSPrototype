@@ -26,15 +26,13 @@ This is a  Singelton! Use
 
 class Player : NSObject, AVAudioPlayerDelegate {
     var audioPlayer = AVQueuePlayer()
-    //var currentBook = book37723 // book18716 //  book39657 //  memoBook
-    
-    var currentBook: Book? // ! = BookManager.sharedInstance.findBook("37723") // TODO: Deal with optional Book !!!!!
+    var currentBook: Book?
     var currentPartNo = 0
     var newPartCallback: Callback?
     let observerManager = ObserverManager() // For KVO - see: https://github.com/timbodeit/ObserverManager
     
     // ----------------------------------------------------------------------------------------------
-    // MARK: - Public API ............
+    // MARK: - PUBLIC API ............
     
     static let sharedInstance = Player()
     private override init() {
@@ -97,8 +95,11 @@ class Player : NSObject, AVAudioPlayerDelegate {
         NSLog("\(__FUNCTION__)()...")
 
         audioPlayer.pause() // TODO: AVPlayer does not have a stop method
+        NSLog("\(__FUNCTION__)() - dereg. observers ...")
         self.observerManager.deregisterAllObservers()
+        NSLog("\(__FUNCTION__)() - removing all player items ...")
         self.audioPlayer.removeAllItems()
+        NSLog("\(__FUNCTION__)() - stopped ...")
         
     }
 
@@ -110,11 +111,35 @@ class Player : NSObject, AVAudioPlayerDelegate {
     func nextAudioPart() {
         guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         if ( currentPartNo < currentBook.parts.count ) {
+            stop()
             setupCurrentAudioPart( currentPartNo + 1) { self.play() }
         } else {
-            audioPlayer.pause()  // TODO: AVPlayer does not have a stop method
+            stop()
         }
     }
+    
+    func previousAudioPart() {
+        setupCurrentAudioPart( max(currentPartNo - 1, 0) ) { self.play() }
+    }
+    
+    func playPartForId( partId: String) {
+        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
+        NSLog("playPartForId(\(partId))...")
+        if let partNo = currentBook.partNoForId( partId ) {
+            setupCurrentAudioPart( partNo ) { self.play() }
+        } else {
+            NSLog("partId \(partId) not found")
+            // TODO: More errorhandling.....
+        }
+    }
+    
+    func currentPart() -> BookPart? {
+        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return nil }
+        return currentBook.part(currentPartNo)
+    }
+    
+    // ----------------------------------------------------------------------------------------------
+    // MARK: - PRIVATE METHODS ..................
     
     func nextAudioFile() {
         guard let _ = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
@@ -139,28 +164,99 @@ class Player : NSObject, AVAudioPlayerDelegate {
         return nil
     }
     
-    func previousAudioPart() {
-        setupCurrentAudioPart( max(currentPartNo - 1, 0) ) { self.play() }
+    func setupCurrentAudioPart(partNo: Int = 0, success: () -> () = {} ) {
+        guard let _ = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
+        NSLog("setupCurrentAudioPart( \(partNo)) ...")
+        //self.observerManager.deregisterAllObservers()
+        //self.audioPlayer.removeAllItems()
+        self.stop()
+        self.setupAudioPlayerObservers()
+        NSLog("setupCurrentAudioPart() - audioPlayer Initialized ...")
+        addItemToPlayerQueue(partNo)
+        success()
     }
-    func playPartForId( partId: String) {
+    
+    func addItemToPlayerQueue( partNo: Int ) {
         guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
-        NSLog("playPartForId(\(partId))...")
-        if let partNo = currentBook.partNoForId( partId ) {
-            setupCurrentAudioPart( partNo ) { self.play() }
-        } else {
-            NSLog("partId \(partId) not found")
-            // TODO: More errorhandling.....
+        if let url = currentBook.remoteUrlForPart( partNo ) {
+            NSLog("Add to Queue: \(url.lastPathComponent) from URL: \(url)")
+            let asset = AVURLAsset(URL: url)
+            let item = AVPlayerItem.init(asset: asset, automaticallyLoadedAssetKeys: ["duration","playable","tracks"]) // Asset keys that need to be present before the item is 'ready'
+            self.setupPlayerItemObservers(item, partNo: partNo)
+            self.audioPlayer.insertItem(item, afterItem: nil) // append item to player queue
         }
     }
-    func currentPart() -> BookPart? {
-        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return nil }
-        return currentBook.part(currentPartNo)
+    
+    func setupPlayerItemObservers(item: AVPlayerItem, partNo: Int) {
+        item.whenChanging("status", manager: observerManager ) { item in
+            switch item.status {
+            case .Failed :
+                NSLog("--> PlayerItem FAILED: \(item.asset.debugDescription)")
+            case .ReadyToPlay :
+                NSLog("--> PlayerItem READY: \(item.asset.debugDescription)")
+                if let nextPartNo =  self.partNoForNextAudioFile(partNo) {
+                    self.addItemToPlayerQueue(nextPartNo)
+                }
+            case .Unknown :
+                NSLog("--> PlayerItem UNKNOWN status: \(item.asset.debugDescription)")
+            }
+            
+            if let error = item.error {
+                NSLog("--- Item Error: \(error.localizedDescription) reason: \(error.localizedFailureReason) - UserInfo: \(error.userInfo.debugDescription)")
+                if ( error.code == NSURLErrorUserAuthenticationRequired ) { // Error codes: http://nshipster.com/nserror/
+                    NSLog("*** Authentication Required !!!! ***")
+                    // TODO: Callback to UI ? Deal with Authentication .....
+                    // TODO: Remember where we where. Check if something is playing? (then what??)
+                    self.stop()
+                } else {
+                    NSLog("*** UNHANDLED ERROR !!!! ***")
+                    // TODO: Deal with other item errors .......
+                }
+            }
+        }
     }
     
-    // ----------------------------------------------------------------------------------------------
-    // MARK: - Private methods ..................
     
-    func setupCurrentAudioPart(partNo: Int = 0, success: () -> () = {} ) {
+    
+    /////////// BACKUP COPY OF PREVIOUS EXPERIEMTNS ///////////////////////
+    /*
+    // Setup audioplayer for the current audiopart (and prepare for the following parts)
+    func __EXPERIMENT2_setupCurrentAudioPart(partNo: Int = 0, success: () -> () = {} ) {
+        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
+        NSLog("setupCurrentAudioPart( \(partNo)) ...")
+        
+        self.observerManager.deregisterAllObservers()
+        self.audioPlayer.removeAllItems()
+        self.setupAudioPlayerObservers()
+        
+        onSerialQueue() {
+            var newPartNo = partNo
+            
+            repeat {
+                if let url = currentBook.remoteUrlForPart( newPartNo ) {
+                    NSLog("Add to Queue: \(url.lastPathComponent) from URL: \(url)")
+                    
+                    //let item = AVPlayerItem(URL: url)
+                    let asset = AVURLAsset(URL: url)
+                    let item = AVPlayerItem.init(asset: asset, automaticallyLoadedAssetKeys: ["duration","playable","tracks"])
+                    self.setupPlayerItemObservers(item)
+            
+                    
+                    self.audioPlayer.insertItem(item, afterItem: nil) // append item to player queue
+                }
+                if let no =  self.partNoForNextAudioFile(newPartNo) {
+                    newPartNo = no
+                } else {
+                    newPartNo = -1
+                }
+            } while ( newPartNo > 0 ) //  && newPartNo < 50 ) // TEMPORARY EXPERIMEMT
+        }
+        success() // TODO: Should we wait with this until the first item is added to the queue ?
+    }
+    */
+    
+    /*
+    func _EXPERIMENT1_setupCurrentAudioPart(partNo: Int = 0, success: () -> () = {} ) {
         guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         NSLog("setupCurrentAudioPart( \(partNo)) ...")
         
@@ -284,6 +380,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
             NSLog("mp3 not found")
         }
     }
+    */
 
     // Return a simple string for debug output etc.
     func currentStatus() -> String {
@@ -313,6 +410,108 @@ class Player : NSObject, AVAudioPlayerDelegate {
         ]
     }
     
+    
+    // Return true or false, if successfull or not.
+    func setupAudioActive(active: Bool) -> Bool {
+        NSLog("\(__FILE__).\(__FUNCTION__)( \(active) )...")
+        var success = false
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+            try audioSession.setActive(active, withOptions: .NotifyOthersOnDeactivation ) // ??? Options
+            
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "audioSessionInterrupted", name: AVAudioSessionInterruptionNotification, object: audioSession)
+            
+            // TODO: Broken: NSNotificationCenter.defaultCenter().addObserver(self, selector: "audioSessionRouteChanged", name: AVAudioSessionRouteChangeNotification, object: audioSession)
+
+            success = true
+
+        } catch {
+            NSLog("Error setting AudioSession!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            // TODO: More error handling?
+        }
+        return success
+    }
+    
+    
+    
+    func resetPlayer() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        audioPlayer.pause()
+        audioPlayer.removeAllItems()
+        setupAudioActive(false)
+    }
+    
+    
+    
+    // -----------------------------------------------------------------------------------------------------
+    // MARK: AVQueuePlayer Events 
+
+    // Setup Observers for AVQueuePlayer
+    func setupAudioPlayerObservers() {
+
+        audioPlayer.whenChanging("currentItem", manager: observerManager) { player in
+            NSLog("==> AudioPlayer new current item \(player.currentItem?.asset.debugDescription)")
+            onMainQueue() { self.newPartCallback?() }
+        }
+        audioPlayer.whenChanging("status", manager: observerManager) { player in
+            switch( player.status) {
+            case .Failed :
+                NSLog("*** Player Failed!")
+            case .ReadyToPlay :
+                NSLog("+++ Player is ready to play!")
+            case .Unknown :
+                NSLog("??? Player is in UNKNOWN state ???")
+            }
+        }
+        audioPlayer.whenChanging("rate", manager: observerManager) { player in
+            let playingState = ( player.rate > 0 ? "Playing" : "Paused")
+            NSLog("==> Got new rate \(player.rate) - Player is \(playingState)" )
+        }
+    }
+    func removeAudioPlayerObservers() {
+        //ObserverManager.sharedInstance.deregisterObserversForObject(audioPlayer)
+        observerManager.deregisterObserversForObject(audioPlayer)
+    }
+    
+    
+
+    // Called whenever we get interrupted (by f.ex. phone call, Alarm clock, etc.)
+    func audioSessionInterrupted(notification:NSNotification)
+    {
+        // TODO: Deal with interruptions  
+        // (The Apps AudioSession has been deactivated by the system? 
+        // - Adjust App settings accordingly - Pause AVQueuuePlayer, adjust UI?
+        // TODO: Do we get both an interrupt begin and and interrupt end event?
+        NSLog("*** AVAudioSessionInterruptionNotification interruption received: \(notification)")
+        
+    }
+
+    // Called whenever we the audio route is changed (f.ex. switch to headset og AirPlay) // TODO: Check up on this.
+    // https://developer.apple.com/library/ios/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/HandlingAudioHardwareRouteChanges/HandlingAudioHardwareRouteChanges.html#//apple_ref/doc/uid/TP40007875-CH5-SW1
+    func audioSessionRouteChanged(notification:NSNotification)
+    {
+        // TODO: Deal with route change - Unplug headset should pause audio (according to Apple HIG)
+        NSLog("*** AVAudioSessionRouteChangeNotification interruption received: \(notification)")
+    }
+
+    
+    // Setup callbacks.
+    func listenForEndOfAudio( audio: AVPlayerItem ) {
+        let center = NSNotificationCenter.defaultCenter()
+        center.removeObserver(self)
+        center.addObserver(self, selector: "endOfAudio", name: AVPlayerItemDidPlayToEndTimeNotification, object: audio)
+    }
+    
+    // Called back from AVQueuePlayer on AVPlayerItemDidPlayToEndTimeNotification
+    func endOfAudio() {
+        NSLog("------ END OF ITEM!!!!! ----- AVPlayerItemDidPlayToEndTimeNotification received...")
+        //self.nextAudioPart()
+        NSLog("****************** nextAudioFile DISABLED *********************")
+        // TODO: self.nextAudioFile() // Skip parts until its a new mp3 file
+    }
+
+    // -----------------------------------------------------------------------------------------------------
     
     // Configure playback control from the remote control center. 
     // Visible when swiping up from the bottom even when other Apps are in the forground,
@@ -411,107 +610,6 @@ class Player : NSObject, AVAudioPlayerDelegate {
         commandCenter.bookmarkCommand.enabled = false
         */
     }
-    
-    
-    // Return true or false, if successfull or not.
-    func setupAudioActive(active: Bool) -> Bool {
-        NSLog("\(__FILE__).\(__FUNCTION__)( \(active) )...")
-        var success = false
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
-            try audioSession.setActive(active, withOptions: .NotifyOthersOnDeactivation ) // ??? Options
-            
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "audioSessionInterrupted", name: AVAudioSessionInterruptionNotification, object: audioSession)
-            
-            // TODO: Broken: NSNotificationCenter.defaultCenter().addObserver(self, selector: "audioSessionRouteChanged", name: AVAudioSessionRouteChangeNotification, object: audioSession)
-
-            success = true
-
-        } catch {
-            NSLog("Error setting AudioSession!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            // TODO: More error handling?
-        }
-        return success
-    }
-    
-    
-    
-    func resetPlayer() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-        audioPlayer.pause()
-        audioPlayer.removeAllItems()
-        setupAudioActive(false)
-    }
-    
-    
-    
-    // -----------------------------------------------------------------------------------------------------
-    // MARK: AVQueuePlayer Events 
-
-    // Setup Observers for AVQueuePlayer
-    func setupAudioPlayerObservers() {
-
-        audioPlayer.whenChanging("currentItem") { player in
-            NSLog("==> AudioPlayer new current item \(player.currentItem?.asset.debugDescription)")
-            onMainQueue() { self.newPartCallback?() }
-        }
-        audioPlayer.whenChanging("status") { player in
-            switch( player.status) {
-            case .Failed :
-                NSLog("*** Player Failed!")
-            case .ReadyToPlay :
-                NSLog("+++ Player is ready to play!")
-            case .Unknown :
-                NSLog("??? Player is in UNKNOWN state ???")
-            }
-        }
-        audioPlayer.whenChanging("rate") { player in
-            let playingState = ( player.rate > 0 ? "Playing" : "Paused")
-            NSLog("==> Got new rate \(player.rate) - Player is \(playingState)" )
-        }
-    }
-    func removeAudioPlayerObservers() {
-        ObserverManager.sharedInstance.deregisterObserversForObject(audioPlayer)
-    }
-
-    
-    
-    // Setup callbacks.
-    func listenForEndOfAudio( audio: AVPlayerItem ) {
-        let center = NSNotificationCenter.defaultCenter()
-        center.removeObserver(self)
-        center.addObserver(self, selector: "endOfAudio", name: AVPlayerItemDidPlayToEndTimeNotification, object: audio)
-    }
-
-    // Called whenever we get interrupted (by f.ex. phone call, Alarm clock, etc.)
-    func audioSessionInterrupted(notification:NSNotification)
-    {
-        // TODO: Deal with interruptions  
-        // (The Apps AudioSession has been deactivated by the system? 
-        // - Adjust App settings accordingly - Pause AVQueuuePlayer, adjust UI?
-        // TODO: Do we get both an interrupt begin and and interrupt end event?
-        NSLog("*** AVAudioSessionInterruptionNotification interruption received: \(notification)")
-        
-    }
-
-    // Called whenever we the audio route is changed (f.ex. switch to headset og AirPlay) // TODO: Check up on this.
-    // https://developer.apple.com/library/ios/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/HandlingAudioHardwareRouteChanges/HandlingAudioHardwareRouteChanges.html#//apple_ref/doc/uid/TP40007875-CH5-SW1
-    func audioSessionRouteChanged(notification:NSNotification)
-    {
-        // TODO: Deal with route change - Unplug headset should pause audio (according to Apple HIG)
-        NSLog("*** AVAudioSessionRouteChangeNotification interruption received: \(notification)")
-    }
-
-    
-    // Called back from AVQueuePlayer on AVPlayerItemDidPlayToEndTimeNotification
-    func endOfAudio() {
-        NSLog("------ END OF ITEM!!!!! ----- AVPlayerItemDidPlayToEndTimeNotification received...")
-        //self.nextAudioPart()
-        NSLog("****************** nextAudioFile DISABLED *********************")
-        // TODO: self.nextAudioFile() // Skip parts until its a new mp3 file
-    }
-
     
     
     

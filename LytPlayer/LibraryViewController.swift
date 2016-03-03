@@ -51,7 +51,8 @@ class LibraryViewController: UIViewController, WKNavigationDelegate  {
     // Download bog: http://zipit.e17.dk/ZipIt/get.aspx?session=10142992&book=37827&option=daisy
     func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
         NSLog("webView decidePolicyForNavigationAction... ")
-        NSLog( navigationAction.description)
+        NSLog( navigationAction.debugDescription) // TODO: BUG: We crash with EXE_BAD_ACCESS here ?????
+                                                  // Console output indicates we continiue? Maybe called twice???
         if let url = navigationAction.request.URL
         {
             let path       = url.absoluteString
