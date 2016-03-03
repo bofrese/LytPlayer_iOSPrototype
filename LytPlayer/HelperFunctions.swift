@@ -12,10 +12,77 @@ import Foundation
 
 
 
+// MARK: - Async utilities
+
+private let bgSerialQueue = dispatch_queue_create("serial-worker", DISPATCH_QUEUE_SERIAL)
+func onSerialQueue( closure: () -> () ) {
+    dispatch_async(bgSerialQueue) {
+        closure()
+    }
+}
+func onMainQueue( closure: () -> () ) {
+    dispatch_async(dispatch_get_main_queue()) {
+        closure()
+    }
+}
 
 
+
+// MARK: - Filesystem and URL utilities
+
+
+/*
+let dirPaths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,
+				.UserDomainMask, true)
+let docsDir = dirPaths[0]
+func localFileUrl( filename: String ) -> NSURL {
+        return NSURL.fileURLWithPath("\(docsDir)/\(filename)")
+}
+*/
+
+func documentsURL() -> NSURL {
+    let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+    return documentsURL
+}
+
+func resourcePath() -> String {
+    //let fm = NSFileManager.defaultManager()
+    let path = NSBundle.mainBundle().resourcePath!
+    return path
+}
+func resourceURL() -> NSURL {
+    return NSURL.fileURLWithPath(resourcePath())
+}
+
+func fileURL(filename: String) -> NSURL {
+    // let fileURL = documentsURL().URLByAppendingPathComponent(filename)
+    // TODO: Currently we only llok for resoruces, and not file in the Documents directory....
+    let fileURL = resourceURL().URLByAppendingPathComponent(filename)
+    return fileURL
+}
+
+func fileExists(filename: String) -> Bool {
+    let url = fileURL(filename)
+    let path = url.path
+    let exists = NSFileManager.defaultManager().fileExistsAtPath(path!)
+    return exists
+}
+
+
+func readFile(filename: String) throws -> String {
+    let contentString = try String(contentsOfURL: fileURL(filename), encoding: NSUTF8StringEncoding)
+    return contentString
+}
+
+func debugDumpDir(dir: String) {
+    NSLog("Dump \(dir)")
+    let files = try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(dir)
+    NSLog("- files : \(files)")
+}
+
+// MARK: - Regular Expressions
 //-----------------------------------------------------------------------------------------
-//  SwiftRegex.swift
+// SwiftRegex.swift
 // https://github.com/kasei/SwiftRegex/blob/master/SwiftRegex/SwiftRegex.swift
 //
 //  Created by Gregory Todd Williams on 6/7/14.

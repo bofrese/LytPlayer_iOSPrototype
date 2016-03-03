@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		E50D2CDD1C7CA4B600306745 /* 37723 in Resources */ = {isa = PBXBuildFile; fileRef = E50D2CDC1C7CA4B600306745 /* 37723 */; };
-		E50D2CDF1C7CA5B300306745 /* Book37723.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50D2CDE1C7CA5B300306745 /* Book37723.swift */; };
+		E51183AC1C85A18F00ECEF74 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51183AB1C85A18F00ECEF74 /* ObjectMapper.framework */; };
+		E51183AD1C85A18F00ECEF74 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E51183AB1C85A18F00ECEF74 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E51183B11C85A3B200ECEF74 /* BookManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51183B01C85A3B200ECEF74 /* BookManager.swift */; };
 		E53B41061C80816900AB08C7 /* ObserverManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B41051C80816900AB08C7 /* ObserverManager.swift */; };
 		E55947171C77357900810318 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55947161C77357900810318 /* HelperFunctions.swift */; };
 		E57B9A081C761562001B91FE /* AudioFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B9A071C761562001B91FE /* AudioFunctions.swift */; };
@@ -44,9 +46,24 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		E51183AE1C85A18F00ECEF74 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E51183AD1C85A18F00ECEF74 /* ObjectMapper.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		E50D2CDC1C7CA4B600306745 /* 37723 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = 37723; sourceTree = "<group>"; };
-		E50D2CDE1C7CA5B300306745 /* Book37723.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book37723.swift; sourceTree = "<group>"; };
+		E51183AB1C85A18F00ECEF74 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
+		E51183B01C85A3B200ECEF74 /* BookManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookManager.swift; sourceTree = "<group>"; };
 		E53B41051C80816900AB08C7 /* ObserverManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverManager.swift; sourceTree = "<group>"; };
 		E55947161C77357900810318 /* HelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 		E57B9A071C761562001B91FE /* AudioFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFunctions.swift; sourceTree = "<group>"; };
@@ -76,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E51183AC1C85A18F00ECEF74 /* ObjectMapper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +117,7 @@
 		E5DC24831C64D16B007105A7 = {
 			isa = PBXGroup;
 			children = (
+				E51183AB1C85A18F00ECEF74 /* ObjectMapper.framework */,
 				E5DC248E1C64D16B007105A7 /* LytPlayer */,
 				E5DC24A51C64D16B007105A7 /* LytPlayerTests */,
 				E5DC24B01C64D16B007105A7 /* LytPlayerUITests */,
@@ -124,6 +143,7 @@
 				E5DC24C11C64EFA9007105A7 /* TestAudio */,
 				E5DC24911C64D16B007105A7 /* PlayerViewController.swift */,
 				E58468661C68C69500A9D8C9 /* Player.swift */,
+				E51183B01C85A3B200ECEF74 /* BookManager.swift */,
 				E57B9A071C761562001B91FE /* AudioFunctions.swift */,
 				E5DC248F1C64D16B007105A7 /* AppDelegate.swift */,
 				E5DC24931C64D16B007105A7 /* LibraryViewController.swift */,
@@ -160,7 +180,6 @@
 		E5DC24C11C64EFA9007105A7 /* TestAudio */ = {
 			isa = PBXGroup;
 			children = (
-				E50D2CDE1C7CA5B300306745 /* Book37723.swift */,
 				E50D2CDC1C7CA4B600306745 /* 37723 */,
 			);
 			name = TestAudio;
@@ -176,6 +195,8 @@
 				E5DC24881C64D16B007105A7 /* Sources */,
 				E5DC24891C64D16B007105A7 /* Frameworks */,
 				E5DC248A1C64D16B007105A7 /* Resources */,
+				E51183AE1C85A18F00ECEF74 /* Embed Frameworks */,
+				E51183AF1C85A1AE00ECEF74 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -299,6 +320,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		E51183AF1C85A1AE00ECEF74 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/ObjectMapper.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E5DC24881C64D16B007105A7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -310,11 +348,11 @@
 				E5DC24901C64D16B007105A7 /* AppDelegate.swift in Sources */,
 				E58468671C68C69500A9D8C9 /* Player.swift in Sources */,
 				E584685F1C68B78A00A9D8C9 /* Book.swift in Sources */,
+				E51183B11C85A3B200ECEF74 /* BookManager.swift in Sources */,
 				E53B41061C80816900AB08C7 /* ObserverManager.swift in Sources */,
 				E5DC24921C64D16B007105A7 /* PlayerViewController.swift in Sources */,
 				E5FBACDD1C7DBB5D00AA54DC /* BookshelfViewController.swift in Sources */,
 				E55947171C77357900810318 /* HelperFunctions.swift in Sources */,
-				E50D2CDF1C7CA5B300306745 /* Book37723.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,6 +494,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = LytPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nota.dk.LytPlayer;
@@ -467,6 +509,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = LytPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nota.dk.LytPlayer;

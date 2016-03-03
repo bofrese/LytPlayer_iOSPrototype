@@ -41,10 +41,10 @@ my $book = {
 
 parse_master();
 
-say "--------------- Book ------------";
-say Dumper $book;
+#say "--------------- Book ------------";
+#say Dumper $book;
 
-generate_swift();
+#generate_swift();
 generate_json();
 
 
@@ -110,6 +110,8 @@ sub parse_smil
           # TODO: For now we generate a new part per audio segment. Need to fix this.
 
           my %new_part = %$part; # TODO: Should use clone, only works because is not nested.
+          $new_part{begin} *= 1;
+          $new_part{end} *= 1;
           push ( $book->{parts}, \%new_part );
         }
       }
@@ -164,7 +166,7 @@ sub generate_swift
   ";
 
 say "--------- SWIFT ------------";
-say $swift;
+#say $swift;
 write_file( "Book$id.swift", $swift);
 
 
@@ -173,7 +175,10 @@ write_file( "Book$id.swift", $swift);
 sub generate_json
 {
   my $id = $book->{id};
-  write_file( "Book$id.json", JSON->new->pretty->encode($book));
+  my $json = JSON->new->pretty->encode($book);
+  say "--------- JSON ------------";
+  say $json;
+  write_file_utf8( "Book$id.json", $json );
 }
 
 
@@ -181,7 +186,8 @@ sub strip_non_num
 {
   my $str = shift;
   $str =~ s/[^0-9\.]//g; # Quick and dirty impl.
-  return $str;
+  my $num = $str * 1;# Force numeric interpretation
+  return $num; 
 }
 sub parse {
   my $file = shift;
@@ -204,7 +210,13 @@ sub parse_and_dump
   say Dumper($data);
 }
 
-
+sub write_file_utf8 {
+    my $name = shift;
+    open my $fh, '>:encoding(UTF-8)', $name
+        or die "Couldn't create '$name': $!";
+    local $/;
+    print {$fh} $_ for @_;
+};
 
 1;
 __END__

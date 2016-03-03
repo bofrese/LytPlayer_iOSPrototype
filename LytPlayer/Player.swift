@@ -20,13 +20,15 @@ Player:
 This class is responsible for all interaction with the Audio layer in iOS.
 No other classes should have any knowledge of which underlying audio playing framework is used!
 
-This is a  Singelton! Use :
+This is a  Singelton! Use
     player = Player.sharedInstance
 */
 
 class Player : NSObject, AVAudioPlayerDelegate {
     var audioPlayer = AVQueuePlayer()
-    var currentBook = book37723 // book18716 //  book39657 //  memoBook
+    //var currentBook = book37723 // book18716 //  book39657 //  memoBook
+    
+    var currentBook: Book? // ! = BookManager.sharedInstance.findBook("37723") // TODO: Deal with optional Book !!!!!
     var currentPartNo = 0
     var newPartCallback: Callback?
     let observerManager = ObserverManager() // For KVO - see: https://github.com/timbodeit/ObserverManager
@@ -39,7 +41,14 @@ class Player : NSObject, AVAudioPlayerDelegate {
         super.init()
         audioPlayer.actionAtItemEnd = .Advance
         configureRemoteControlEvents()
-        setupCurrentAudioPart()
+    }
+    
+    func loadBook(book: Book) {
+        currentBook = book
+        onMainQueue() {
+            // TODO: This is an experiment. Move queu enforcement to setup method if needed
+            self.setupCurrentAudioPart(0) // TODO: Use lastMark when it is implemented
+        }
     }
     
     // Call this callback when changing to a new BookPart (to update UI f.ex.)
@@ -48,6 +57,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     }
 
     func play() {
+        guard let _ = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         NSLog("\(__FUNCTION__)()...")
 
         // Verify that we are ready to play....
@@ -73,6 +83,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         audioPlayer.play()
         configureNowPlayingInfo()
         NSLog("Player.play() book: \(currentStatus() )")
+        self.newPartCallback?()
     }
 
     func pause() {
@@ -97,6 +108,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     }
     
     func nextAudioPart() {
+        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         if ( currentPartNo < currentBook.parts.count ) {
             setupCurrentAudioPart( currentPartNo + 1) { self.play() }
         } else {
@@ -105,12 +117,14 @@ class Player : NSObject, AVAudioPlayerDelegate {
     }
     
     func nextAudioFile() {
+        guard let _ = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         if let newPartNo = partNoForNextAudioFile(currentPartNo) {
             setupCurrentAudioPart( newPartNo) { self.play() }
         }
     }
     
     func partNoForNextAudioFile( startNo: Int ) -> Int? {
+        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return nil }
         let startFile = currentBook.part(startNo).file
         var newFile = startFile
         var newPartNo = startNo + 1
@@ -129,6 +143,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         setupCurrentAudioPart( max(currentPartNo - 1, 0) ) { self.play() }
     }
     func playPartForId( partId: String) {
+        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         NSLog("playPartForId(\(partId))...")
         if let partNo = currentBook.partNoForId( partId ) {
             setupCurrentAudioPart( partNo ) { self.play() }
@@ -137,7 +152,8 @@ class Player : NSObject, AVAudioPlayerDelegate {
             // TODO: More errorhandling.....
         }
     }
-    func currentPart() -> BookPart {
+    func currentPart() -> BookPart? {
+        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return nil }
         return currentBook.part(currentPartNo)
     }
     
@@ -145,6 +161,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     // MARK: - Private methods ..................
     
     func setupCurrentAudioPart(partNo: Int = 0, success: () -> () = {} ) {
+        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         NSLog("setupCurrentAudioPart( \(partNo)) ...")
         
         
@@ -156,13 +173,26 @@ class Player : NSObject, AVAudioPlayerDelegate {
 
         // FIXME: Write this in a more swifty way.....
         var newPartNo = partNo
+        
         repeat {
             if let url = currentBook.remoteUrlForPart( newPartNo ) {
                 NSLog("Add to Queue: \(url.lastPathComponent) from URL: \(url)")
-                let item = AVPlayerItem(URL: url)
+                
+                //let item = AVPlayerItem(URL: url)
+                let asset = AVURLAsset(URL: url)
+                let item = AVPlayerItem.init(asset: asset, automaticallyLoadedAssetKeys: ["duration","playable","tracks"])
                 
                 item.whenChanging("status", manager: observerManager ) { item in
-                    NSLog("--> New status for PlayerItem asset: \(item.asset.debugDescription) Status=\(item.status.rawValue)")
+                    //NSLog("--> New status for PlayerItem asset: \(item.asset.debugDescription) Status=\(item.status.rawValue)")
+                    switch item.status {
+                    case .Failed :
+                        NSLog("--> PlayerItem FAILED: \(item.asset.debugDescription)")
+                    case .ReadyToPlay :
+                        NSLog("--> PlayerItem READY: \(item.asset.debugDescription)")
+                    case .Unknown :
+                        NSLog("--> PlayerItem UNKNOWN status: \(item.asset.debugDescription)")
+                    }
+                    
                     if let error = item.error {
                         NSLog("--- Item Error: \(error.localizedDescription) reason: \(error.localizedFailureReason) - UserInfo: \(error.userInfo.debugDescription)")
                         if ( error.code == NSURLErrorUserAuthenticationRequired ) { // Error codes: http://nshipster.com/nserror/
@@ -174,9 +204,11 @@ class Player : NSObject, AVAudioPlayerDelegate {
                     }
                 }
 
+                /* Not sure we need this?
                 item.whenChanging("loadedTimeRanges", manager: observerManager ) { item in
                     NSLog("--> New loadedTimeRanges for PlayerItem: \(item.asset.debugDescription) LoadedRange=\(item.loadedTimeRanges.debugDescription)")
                 }
+                */
                 
                 playerItems.append(item)
             }
@@ -185,32 +217,30 @@ class Player : NSObject, AVAudioPlayerDelegate {
             } else {
                 newPartNo = -1
             }
-        } while ( newPartNo > 0 )
+        } while ( newPartNo > 0 ) //  && newPartNo < 50 ) // TEMPORARY EXPERIMEMT
 
+        /*
         if let firstItem = playerItems.first {
             self.listenForEndOfAudio(firstItem)
         }
+        */
         
-        audioPlayer = AVQueuePlayer(items: playerItems)
-        setupAudioPlayerObservers()
-        self.newPartCallback?()
+        //////// TODOD: Does this make it hang???   
+        //let reducedPlayerItems : [AVPlayerItem] = Array( playerItems[0...5] )
+        //audioPlayer = AVQueuePlayer(items: reducedPlayerItems )
+        
+        onSerialQueue() {
+            self.audioPlayer = AVQueuePlayer(items: playerItems)
+            self.setupAudioPlayerObservers()
+            
+        }
+        
+        //TODO: Not sure we should call this here. Only when begin playing... self.newPartCallback?()
         success()
         return // ........................ END EXPERIMENT ..............
         ////////////////////////////////////////////////////////////////
     
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         // ............. LOCAL AUDIO ..................
@@ -242,9 +272,9 @@ class Player : NSObject, AVAudioPlayerDelegate {
             // TODO: Check for availability...... Currently I get not errors????
             
             self.currentPartNo = partNo
-            if ( self.currentPart().begin > 0 ) {
-                NSLog("We need to skip to \(self.currentPart().begin)")
-                let startTime = CMTimeMake( Int64(self.currentPart().begin * 1000) , 1000)
+            if ( self.currentPart()!.begin > 0 ) {
+                NSLog("We need to skip to \(self.currentPart()!.begin)")
+                let startTime = CMTimeMake( Int64(self.currentPart()!.begin * 1000) , 1000)
                 self.audioPlayer.seekToTime( startTime ) // FIXME: Do we need to wait for the item to be ready?
             }
             
@@ -257,6 +287,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
 
     // Return a simple string for debug output etc.
     func currentStatus() -> String {
+        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return "No current Book" }
         let part = currentBook.parts[currentPartNo]
         let status = "'\(currentBook.title)' (\(currentPartNo)/\(currentBook.parts.count)) \(part.file) \(part.begin)s - \(part.end)s"
         return status
@@ -264,6 +295,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     
     // Now playing info is showed on the lock screen and the controll center.
     func configureNowPlayingInfo() {
+        guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         NSLog("\(__FUNCTION__)()...")
         let infoCenter = MPNowPlayingInfoCenter.defaultCenter()
         infoCenter.nowPlayingInfo = [
@@ -421,10 +453,10 @@ class Player : NSObject, AVAudioPlayerDelegate {
     func setupAudioPlayerObservers() {
 
         audioPlayer.whenChanging("currentItem") { player in
-            NSLog("->-> AudioPlayer new current item \(player.currentItem?.asset.debugDescription)")
+            NSLog("==> AudioPlayer new current item \(player.currentItem?.asset.debugDescription)")
+            onMainQueue() { self.newPartCallback?() }
         }
         audioPlayer.whenChanging("status") { player in
-                NSLog("------ Got new status \(player.status.rawValue)")
             switch( player.status) {
             case .Failed :
                 NSLog("*** Player Failed!")
@@ -436,7 +468,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         }
         audioPlayer.whenChanging("rate") { player in
             let playingState = ( player.rate > 0 ? "Playing" : "Paused")
-            NSLog("->-> Got new rate \(player.rate) - Player is \(playingState)" )
+            NSLog("==> Got new rate \(player.rate) - Player is \(playingState)" )
         }
     }
     func removeAudioPlayerObservers() {

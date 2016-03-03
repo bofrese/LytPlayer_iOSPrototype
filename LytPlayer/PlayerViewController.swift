@@ -47,25 +47,24 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
     // MARK: Update UI to current state
     
     func scrollToCurrentPart() {
-        if let textId = player.currentPart().textId {
+        if let textId = player.currentPart()?.textId {
             NSLog("Scroll to textId \(textId)")
             
             if let isLoading = webView?.loading where isLoading == true {
                 // TODO: Scroll after view has loaded....
                 NSLog("We can not scroll when the view is still loading")
             } else {
-                webView?.evaluateJavaScript("window.location.hash = '#\(textId)';", completionHandler: {
+                webView?.evaluateJavaScript("window.location.hash = '#\(textId)';") {
                     (obj: AnyObject?, err: NSError?) in
                     if let error = err {
                         NSLog("scroll failed \(error)")
                     } else {
                         NSLog("Scroll succeeded?")
                     }
-                    
-                } )
+                }
             }
         } else {
-            NSLog("No textId defined for part")
+            NSLog("No textId defined for part, or no currentPart")
         }
     }
     
@@ -98,6 +97,17 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
         self.webView?.navigationDelegate = self
         self.webView?.allowsBackForwardNavigationGestures = true
         
+        // TODO: Book hardcoded
+        onSerialQueue() {
+            if let book = BookManager.sharedInstance.findBook("37723") {
+                NSLog("************ Finished parsing book \(book) *************")
+                self.player.loadBook(book)
+                NSLog("************ Finished loading book *************")
+            } else {
+                NSLog("************ Book not found ?????????? ")
+            }
+        }
+        
         // TODO: Hardcoded content file name, should be taken from Book info.
         //if let path = NSBundle.mainBundle().pathForResource( "18716/18716" , ofType: "htm") {
         if let path = NSBundle.mainBundle().pathForResource( "37723/main" , ofType: "html") {
@@ -107,18 +117,6 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
         }
     }
 
-    // TODO: Not used - cleanup....
-    func urlForFile( file: String ) -> NSURL? {
-        //let fragment = "#pmsu00099"
-        var url: NSURL?
-        if let path = NSBundle.mainBundle().pathForResource(file, ofType: nil, inDirectory: "18716") {
-            //path.appendContentsOf(fragment)
-            url = NSURL.fileURLWithPath(path)
-        }
-        
-        return url
-    }
-    
     
     // --------------------------------------------------------------------------
     // MARK: - WKNavigationDelegate

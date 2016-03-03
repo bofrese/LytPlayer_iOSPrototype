@@ -8,22 +8,18 @@
 
 import Foundation
 import UIKit
+import ObjectMapper
 
 
-// Not realy used yet....
-protocol Playable {
-    
-}
-
-
-class Book: Playable {
-    var id: Int
-    var author: String
-    var title: String
-    var cover: String
-    var parts: [BookPart]
-    var duration: Int // seconds
-    var position: Int // Seconds
+class Book: Mappable, CustomStringConvertible {
+    var id: String!            // FIXME: Should all these be marked with !
+    var author: String!
+    var title: String!
+    var cover: String?
+    var parts: [BookPart] = []
+    var duration: Int! // = 0 // seconds
+    var position: Int = 0 // Seconds
+    /*
     init( id: Int, author: String, title: String, cover: String, duration: Int = 0, position: Int = 0, parts: [BookPart]) {
         self.id = id
         self.author = author
@@ -35,6 +31,23 @@ class Book: Playable {
         if ( self.duration == 0 ) {
             self.duration = calculateDuration()
         }
+    }
+*/
+    
+    required init?(_ map: Map) {
+    }
+    
+    func mapping(map: Map) {
+        id <- map["id"]
+        author <- map["author"]
+        title <- map["title"]
+        cover <- map["cover"]
+        parts <- map["parts"]
+        duration <- map["duration"]
+    }
+    
+    var description: String {
+         return "Book: id:\(id) title=\(title), author=\(author), duration=\(duration), cover=\(cover) #parts=\(parts.count)"
     }
     
     func calculateDuration() -> Int {
@@ -61,9 +74,10 @@ class Book: Playable {
     func localUrlForPart( partNumber: Int ) -> NSURL? {
         var url : NSURL?
         let part = parts[ partNumber]
+        let filename = "\(self.id)/\(part.file)"
         
-        if let path = NSBundle.mainBundle().pathForResource( part.file , ofType: "mp3") {
-            url  = NSURL.fileURLWithPath(path)
+        if ( fileExists(filename)) {
+            url = fileURL(filename)
         }
         
         return url
@@ -73,7 +87,7 @@ class Book: Playable {
     // Example: http://m.e17.dk/DodpFiles/10142992/18716/MEM_001.mp3
     func remoteUrlForPart( partNumber: Int ) -> NSURL? {
         let part = parts[ partNumber]
-        let urlString = bookRemoteBaseUrl() + part.file + ".mp3";
+        let urlString = bookRemoteBaseUrl() + "\(self.id)/\(part.file)"
         let url  = NSURL(string: urlString)
         return url
     }
