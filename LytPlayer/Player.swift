@@ -32,6 +32,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     var newPartCallback: Callback?
     var authorizationFailedCallback: Callback?
     var playerItemFailedCallback: NSErrorCallback?
+    var timePassedCallback: Callback? // TODO.
     let observerManager = ObserverManager() // For KVO - see: https://github.com/timbodeit/ObserverManager
     
     // ----------------------------------------------------------------------------------------------
@@ -96,12 +97,14 @@ class Player : NSObject, AVAudioPlayerDelegate {
     func pause() {
         NSLog("\(__FUNCTION__)()...")
         audioPlayer.pause()
+        // TODO: Register where we are so can continue were we stopped.
         setupAudioActive(false)
     }
 
     func stop() {
         NSLog("\(__FUNCTION__)()...")
-        audioPlayer.pause() // TODO: AVPlayer does not have a stop method
+        audioPlayer.pause() // AVPlayer does not have a stop method
+        // TODO: Register where we are so can continue were we stopped.
         self.observerManager.deregisterAllObservers()
         self.audioPlayer.removeAllItems()
     }
@@ -213,7 +216,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
                     NSLog("*** Authentication Required !!!! ***")
                     // TODO: Callback to UI ? Deal with Authentication .....
                     // TODO: Remember where we where. Check if something is playing? (then what??)
-                    self.stop()
+                    self.pause() // TODO: Can we just resume when we come back???
                     self.authorizationFailedCallback?()
                 } else {
                     NSLog("*** UNHANDLED ERROR !!!! ***")
@@ -476,12 +479,31 @@ class Player : NSObject, AVAudioPlayerDelegate {
     // -----------------------------------------------------------------------------------------------------
     // MARK: AVQueuePlayer Events 
 
-    // Setup Observers for AVQueuePlayer
+    var _timeObserver:AnyObject?
+    var _boundarybserver:AnyObject?
+    /// Setup Observers for AVQueuePlayer
     func setupAudioPlayerObservers() {
 
         audioPlayer.whenChanging("currentItem", manager: observerManager) { player in
             NSLog("==> AudioPlayer new current item \(player.currentItem?.asset.debugDescription)")
             self.notifyAboutNewPart()
+            
+            // TODO: Generate events on parts whithin this audio file.
+            if let observer = self._boundarybserver  {
+                self.audioPlayer.removeTimeObserver(observer)
+                self._boundarybserver = nil
+            }
+            // TODO: To get the real boundaries we need to find the new current part....
+            let boundaries: [NSValue] = [
+                NSValue( CMTime: CMTime(seconds:  7, preferredTimescale: 1) ),
+                NSValue( CMTime: CMTime(seconds: 12, preferredTimescale: 1) ),
+                NSValue( CMTime: CMTime(seconds: 27, preferredTimescale: 1) ),
+            ]
+            self._boundarybserver = self.audioPlayer.addBoundaryTimeObserverForTimes(boundaries, queue: dispatch_get_main_queue() ) {
+                let seconds = CMTimeGetSeconds((self.audioPlayer.currentItem?.currentTime())!)
+                let asset = self.audioPlayer.currentItem?.asset
+                NSLog("### Passed Boundary to new Part. \(seconds) into \(asset?.debugDescription)")
+            }
         }
         audioPlayer.whenChanging("status", manager: observerManager) { player in
             switch( player.status) {
@@ -497,11 +519,23 @@ class Player : NSObject, AVAudioPlayerDelegate {
             let playingState = ( player.rate > 0 ? "Playing" : "Paused")
             NSLog("==> Got new rate \(player.rate) - Player is \(playingState)" )
         }
-    }
-    func removeAudioPlayerObservers() {
-        observerManager.deregisterObserversForObject(audioPlayer)
+        if ( _timeObserver == nil) {
+            _timeObserver = audioPlayer.addPeriodicTimeObserverForInterval(CMTime(seconds: 5, preferredTimescale: 1), queue: dispatch_get_main_queue() ) {
+                cmtime in
+                let seconds = CMTimeGetSeconds(cmtime)
+                NSLog("... \(seconds) has passed...")
+                // TODO: Call callback....
+            }
+        }
     }
     
+    func removeAudioPlayerObservers() {
+        observerManager.deregisterObserversForObject(audioPlayer)
+        if let observer = _timeObserver  {
+            audioPlayer.removeTimeObserver(observer)
+            _timeObserver = nil
+        }
+    }
     
 
     // Called whenever we get interrupted (by f.ex. phone call, Alarm clock, etc.)

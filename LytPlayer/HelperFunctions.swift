@@ -31,6 +31,7 @@ func showAlert(title: String, message: String, success: () -> () = {} ) {
     
     let app = UIApplication.sharedApplication()
     let viewController = app.delegate?.window??.rootViewController
+    // TODO: Aditional logic may be needed to find the visibleViewController ??
     viewController?.presentViewController(alertController, animated: true, completion: nil)
 }
 
@@ -39,19 +40,22 @@ func showAlert(title: String, message: String, success: () -> () = {} ) {
 // MARK: - Async utilities
 
 private let bgSerialQueue = dispatch_queue_create("serial-worker", DISPATCH_QUEUE_SERIAL)
-///Run a function/closeure on a backround serial queue.
+/// Run a function/closeure on a backround serial queue.
 func onSerialQueue( closure: () -> () ) {
     dispatch_async(bgSerialQueue) {
         closure()
     }
 }
-///Run a function/closeure on the main (UI) queue.
+/// Run a function/closeure on the main (UI) queue. If we are already on the main thread then just run the function/closure.
 func onMainQueue( closure: () -> () ) {
-    dispatch_async(dispatch_get_main_queue()) {
-        closure()
+    if (NSThread.isMainThread()) {
+            closure()
+    } else {
+        dispatch_async(dispatch_get_main_queue()) {
+            closure()
+        }
     }
 }
-
 
 // -------------------------------------------------------------------------------------
 // MARK: - Filesystem and URL utilities
