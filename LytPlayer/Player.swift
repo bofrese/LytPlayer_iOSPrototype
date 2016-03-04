@@ -13,22 +13,25 @@ import MediaPlayer
 
 // Convenience types and functions .......
 typealias Callback = () -> ()
+typealias NSErrorCallback = (NSError) -> ()
 
 
-/*
+/**
 Player:
 This class is responsible for all interaction with the Audio layer in iOS.
 No other classes should have any knowledge of which underlying audio playing framework is used!
 
 This is a  Singelton! Use
-    player = Player.sharedInstance
+ 
+        player = Player.sharedInstance
 */
-
 class Player : NSObject, AVAudioPlayerDelegate {
     var audioPlayer = AVQueuePlayer()
     var currentBook: Book?
     var currentPartNo = 0
     var newPartCallback: Callback?
+    var authorizationFailedCallback: Callback?
+    var playerItemFailedCallback: NSErrorCallback?
     let observerManager = ObserverManager() // For KVO - see: https://github.com/timbodeit/ObserverManager
     
     // ----------------------------------------------------------------------------------------------
@@ -43,17 +46,23 @@ class Player : NSObject, AVAudioPlayerDelegate {
     
     func loadBook(book: Book) {
         currentBook = book
-        onMainQueue() {
-            // TODO: This is an experiment. Move queu enforcement to setup method if needed
-            self.setupCurrentAudioPart(0) // TODO: Use lastMark when it is implemented
-        }
+        self.setupCurrentAudioPart(0) // TODO: Use lastMark when it is implemented
     }
     
-    // Call this callback when changing to a new BookPart (to update UI f.ex.)
+    /// Register callback to use when changing to a new BookPart (to update UI f.ex.)
     func whenNewPart( cb: Callback) {
         newPartCallback = cb
     }
+    /// Register callback to use when authorization to the server has failed, // TODO: (and we can not resolve login ourselves)
+    func whenAuthorizationFailed( cb: Callback) {
+        authorizationFailedCallback = cb
+    }
+    /// Register callback to use when playback of an item has failed , f.ex. network error. (TODO: Attempt auto recovery)
+    func whenPlayerItemFailed( cb: NSErrorCallback) {
+        playerItemFailedCallback = cb
+    }
 
+    /// Play currently loaded book
     func play() {
         guard let _ = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         NSLog("\(__FUNCTION__)()...")
@@ -81,26 +90,20 @@ class Player : NSObject, AVAudioPlayerDelegate {
         audioPlayer.play()
         configureNowPlayingInfo()
         NSLog("Player.play() book: \(currentStatus() )")
-        self.newPartCallback?()
+        self.notifyAboutNewPart()
     }
 
     func pause() {
         NSLog("\(__FUNCTION__)()...")
-
         audioPlayer.pause()
         setupAudioActive(false)
     }
 
     func stop() {
         NSLog("\(__FUNCTION__)()...")
-
         audioPlayer.pause() // TODO: AVPlayer does not have a stop method
-        NSLog("\(__FUNCTION__)() - dereg. observers ...")
         self.observerManager.deregisterAllObservers()
-        NSLog("\(__FUNCTION__)() - removing all player items ...")
         self.audioPlayer.removeAllItems()
-        NSLog("\(__FUNCTION__)() - stopped ...")
-        
     }
 
     func isPlaying() -> Bool
@@ -141,6 +144,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     // ----------------------------------------------------------------------------------------------
     // MARK: - PRIVATE METHODS ..................
     
+    /// Play the next part where the audio file is different from the current
     func nextAudioFile() {
         guard let _ = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         if let newPartNo = partNoForNextAudioFile(currentPartNo) {
@@ -148,6 +152,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    /// Given a start Part number, find the first following part where the audio file is different
     func partNoForNextAudioFile( startNo: Int ) -> Int? {
         guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return nil }
         let startFile = currentBook.part(startNo).file
@@ -164,18 +169,19 @@ class Player : NSObject, AVAudioPlayerDelegate {
         return nil
     }
     
+    /// Setup the provided part number as the current, and prepare to play it.
     func setupCurrentAudioPart(partNo: Int = 0, success: () -> () = {} ) {
         guard let _ = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         NSLog("setupCurrentAudioPart( \(partNo)) ...")
-        //self.observerManager.deregisterAllObservers()
-        //self.audioPlayer.removeAllItems()
         self.stop()
         self.setupAudioPlayerObservers()
         NSLog("setupCurrentAudioPart() - audioPlayer Initialized ...")
-        addItemToPlayerQueue(partNo)
+        self.currentPartNo = partNo
+        addItemToPlayerQueue(self.currentPartNo)
         success()
     }
     
+    /// Added a player item for a given part to the play queue, and setup observers to automatically schedule the following parts.
     func addItemToPlayerQueue( partNo: Int ) {
         guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
         if let url = currentBook.remoteUrlForPart( partNo ) {
@@ -208,9 +214,11 @@ class Player : NSObject, AVAudioPlayerDelegate {
                     // TODO: Callback to UI ? Deal with Authentication .....
                     // TODO: Remember where we where. Check if something is playing? (then what??)
                     self.stop()
+                    self.authorizationFailedCallback?()
                 } else {
                     NSLog("*** UNHANDLED ERROR !!!! ***")
                     // TODO: Deal with other item errors .......
+                    self.playerItemFailedCallback?(error)
                 }
             }
         }
@@ -442,6 +450,27 @@ class Player : NSObject, AVAudioPlayerDelegate {
         setupAudioActive(false)
     }
     
+    // -----------------------------------------------------------------------------------------------------
+    // MARK: Notification Methods
+    // All callbacks are guaranteed to be called on the Main Thread
+    
+    func notifyAboutPlayerFailed( error: NSError ) {
+        onMainQueue() {
+            self.playerItemFailedCallback?(error)
+        }
+    }
+    
+    func notifyAboutNewPart() {
+        onMainQueue() {
+            self.newPartCallback?()
+        }
+    }
+    
+    func notifyAboutAuthorizationFailed() {
+        onMainQueue() {
+            self.authorizationFailedCallback?()
+        }
+    }
     
     
     // -----------------------------------------------------------------------------------------------------
@@ -452,7 +481,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
 
         audioPlayer.whenChanging("currentItem", manager: observerManager) { player in
             NSLog("==> AudioPlayer new current item \(player.currentItem?.asset.debugDescription)")
-            onMainQueue() { self.newPartCallback?() }
+            self.notifyAboutNewPart()
         }
         audioPlayer.whenChanging("status", manager: observerManager) { player in
             switch( player.status) {
@@ -470,7 +499,6 @@ class Player : NSObject, AVAudioPlayerDelegate {
         }
     }
     func removeAudioPlayerObservers() {
-        //ObserverManager.sharedInstance.deregisterObserversForObject(audioPlayer)
         observerManager.deregisterObserversForObject(audioPlayer)
     }
     
@@ -496,6 +524,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     }
 
     
+    /* Currently unused. Replaced by KVO on AVPlayerItems
     // Setup callbacks.
     func listenForEndOfAudio( audio: AVPlayerItem ) {
         let center = NSNotificationCenter.defaultCenter()
@@ -510,6 +539,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         NSLog("****************** nextAudioFile DISABLED *********************")
         // TODO: self.nextAudioFile() // Skip parts until its a new mp3 file
     }
+    */
 
     // -----------------------------------------------------------------------------------------------------
     
@@ -532,8 +562,8 @@ class Player : NSObject, AVAudioPlayerDelegate {
             self.pause()
             return .Success
         }
+        // Headset remote sends this signal on single click .....
         commandCenter.togglePlayPauseCommand.addTargetWithHandler { (event) -> MPRemoteCommandHandlerStatus in
-            // Headset remote sends this signal.....
             NSLog("togglePlayPauseCommand \(event.description)")
             
             if ( self.isPlaying() ) {
@@ -551,6 +581,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         }
         commandCenter.previousTrackCommand.enabled = true
         
+        // Can be sent by double-clicking on the headset remote
         commandCenter.nextTrackCommand.addTargetWithHandler { (event) -> MPRemoteCommandHandlerStatus in
             NSLog("nextTrackCommand \(event.description)")
             self.nextAudioPart()
@@ -558,7 +589,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         }
         commandCenter.nextTrackCommand.enabled = true
         
-
+        // Currently unsure what can send this ????
         commandCenter.changePlaybackRateCommand.addTargetWithHandler { (event) -> MPRemoteCommandHandlerStatus in
             NSLog("changePlaybackRateCommand \(event.description)")
             return .Success
@@ -567,6 +598,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         commandCenter.changePlaybackRateCommand.supportedPlaybackRates = [ 0.5, 1.0, 1.5, 2.0 ]
         
         
+        // Not shure what sends this event?
         /*
         commandCenter.seekBackwardCommand.addTargetWithHandler { (event) -> MPRemoteCommandHandlerStatus in
             NSLog("seekBackwardCommand \(event.description)")
@@ -581,6 +613,8 @@ class Player : NSObject, AVAudioPlayerDelegate {
         commandCenter.seekForwardCommand.enabled = true
         */
 
+        
+        // Not room in the command center for both skip forward/backward and previous/next track ?
         /*
         commandCenter.skipBackwardCommand.addTargetWithHandler { (event) -> MPRemoteCommandHandlerStatus in
             NSLog("skipBackwardCommand \(event.description)")
@@ -602,6 +636,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
         }
         commandCenter.changePlaybackPositionCommand.enabled = true
 
+        // Command center has a build in bookmark function. Do we want to use that? If we enable it, there are apparently not room for previous/next track
         /*
         commandCenter.bookmarkCommand.addTargetWithHandler { (event) -> MPRemoteCommandHandlerStatus in
             NSLog("bookmarkCommand \(event.description)")
@@ -609,32 +644,6 @@ class Player : NSObject, AVAudioPlayerDelegate {
         }
         commandCenter.bookmarkCommand.enabled = false
         */
-    }
-    
-    
-    
-    // -------------------------------------------------------------------------------------------------
-    // MARK: - AVAudioPlayerDelegate - Deal with (background) playback events NOT USED with AVQueuePlayer!!!!
-    // TODO: DELETE THESE..........
-    
-    @objc func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
-        NSLog("AVAudioPlayerDelegate audioPlayerDidFinishPlaying book \(currentStatus() )")
-        
-        // TODO: More logic here to verify next part....
-        nextAudioPart()
-    }
-    
-    @objc func audioPlayerDecodeErrorDidOccur(player: AVAudioPlayer, error: NSError?) {
-        NSLog("AVAudioPlayerDelegate audioPlayerDecodeErrorDidOccur book \(currentStatus() )")
-    }
-    
-    @objc func  audioPlayerBeginInterruption(player: AVAudioPlayer) {
-        NSLog("AVAudioPlayerDelegate audioPlayerBeginInterruption book \(currentStatus() )")
-    }
-    
-    @objc func audioPlayerEndInterruption(player: AVAudioPlayer) {
-        NSLog("AVAudioPlayerDelegate audioPlayerEndInterruption book \(currentStatus() )")
-        play()
     }
     
 }

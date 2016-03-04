@@ -9,17 +9,43 @@
 //
 
 import Foundation
+import UIKit
 
 
+// -------------------------------------------------------------------------------------
+// MARK: - UI Related helpers
 
+/// Show an alert
+func showAlert(title: String, message: String, success: () -> () = {} ) {
+    
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+    
+    alertController.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
+        NSLog("Handle Ok logic here")
+        success()
+    }))
+    
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
+        NSLog("Handle Cancel Logic here")
+    }))
+    
+    let app = UIApplication.sharedApplication()
+    let viewController = app.delegate?.window??.rootViewController
+    viewController?.presentViewController(alertController, animated: true, completion: nil)
+}
+
+
+// -------------------------------------------------------------------------------------
 // MARK: - Async utilities
 
 private let bgSerialQueue = dispatch_queue_create("serial-worker", DISPATCH_QUEUE_SERIAL)
+///Run a function/closeure on a backround serial queue.
 func onSerialQueue( closure: () -> () ) {
     dispatch_async(bgSerialQueue) {
         closure()
     }
 }
+///Run a function/closeure on the main (UI) queue.
 func onMainQueue( closure: () -> () ) {
     dispatch_async(dispatch_get_main_queue()) {
         closure()
@@ -27,32 +53,8 @@ func onMainQueue( closure: () -> () ) {
 }
 
 
-
+// -------------------------------------------------------------------------------------
 // MARK: - Filesystem and URL utilities
-
-
-/*
-let dirPaths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,
-				.UserDomainMask, true)
-let docsDir = dirPaths[0]
-func localFileUrl( filename: String ) -> NSURL {
-        return NSURL.fileURLWithPath("\(docsDir)/\(filename)")
-}
-*/
-
-func documentsURL() -> NSURL {
-    let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-    return documentsURL
-}
-
-func resourcePath() -> String {
-    //let fm = NSFileManager.defaultManager()
-    let path = NSBundle.mainBundle().resourcePath!
-    return path
-}
-func resourceURL() -> NSURL {
-    return NSURL.fileURLWithPath(resourcePath())
-}
 
 func fileURL(filename: String) -> NSURL {
     // let fileURL = documentsURL().URLByAppendingPathComponent(filename)
@@ -68,10 +70,23 @@ func fileExists(filename: String) -> Bool {
     return exists
 }
 
-
 func readFile(filename: String) throws -> String {
     let contentString = try String(contentsOfURL: fileURL(filename), encoding: NSUTF8StringEncoding)
     return contentString
+}
+
+func documentsURL() -> NSURL {
+    let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+    return documentsURL
+}
+
+func resourceURL() -> NSURL {
+    return NSURL.fileURLWithPath(resourcePath())
+}
+
+func resourcePath() -> String {
+    let path = NSBundle.mainBundle().resourcePath!
+    return path
 }
 
 func debugDumpDir(dir: String) {

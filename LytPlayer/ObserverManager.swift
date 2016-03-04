@@ -116,7 +116,7 @@ public class ObserverManager : NSObject {
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-/// EXTENSION  ...... 
+// MARK: - EXTENSION  ......
 // added by Bo Frese
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -161,19 +161,6 @@ extension AVPlayerItem {
     }
 }
 
-
-//////////////////////////////////// DELETE ///////////////////////
-typealias ObjectObserver = (NSObject?) -> ()
-//... not used any longer, integrated in the extension instead...., but if we need to extend many different classes maybe we should make a generic function to use?
-func playerChange( cb: QueuePlayerObserver ) -> ObjectObserver {
-    return { (obj : NSObject?) in
-        if let object = obj {
-            if let player = object as? AVQueuePlayer {
-                cb(player)
-            }
-        }
-    }
-}
 
 
 

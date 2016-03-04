@@ -19,6 +19,7 @@ class Book: Mappable, CustomStringConvertible {
     var parts: [BookPart] = []
     var duration: Int! // = 0 // seconds
     var position: Int = 0 // Seconds
+    
     /*
     init( id: Int, author: String, title: String, cover: String, duration: Int = 0, position: Int = 0, parts: [BookPart]) {
         self.id = id
@@ -32,7 +33,7 @@ class Book: Mappable, CustomStringConvertible {
             self.duration = calculateDuration()
         }
     }
-*/
+    */
     
     required init?(_ map: Map) {
     }
@@ -56,20 +57,19 @@ class Book: Mappable, CustomStringConvertible {
     
     // Currently not used. ....
     func urlForPart( partNumber: Int ) -> NSURL? {
-        ///////
         ///Experiment
-        let url =  remoteUrlForPart( partNumber)
-        NSLog("urlForPart(\(partNumber)) = \(url)")
-        return url
-        ////////////
-//        var url : NSURL?
-//        if let localurl = localUrlForPart( partNumber ) {
-//            url = localurl
-//        } else {
-//            url = remoteUrlForPart( partNumber)
-//        }
+//        let url =  remoteUrlForPart( partNumber)
 //        NSLog("urlForPart(\(partNumber)) = \(url)")
 //        return url
+        ////////////
+        var url : NSURL?
+        if let localurl = localUrlForPart( partNumber ) {
+            url = localurl
+        } else {
+            url = remoteUrlForPart( partNumber)
+        }
+        NSLog("urlForPart(\(partNumber)) = \(url)")
+        return url
     }
     func localUrlForPart( partNumber: Int ) -> NSURL? {
         var url : NSURL?
@@ -87,26 +87,23 @@ class Book: Mappable, CustomStringConvertible {
     // Example: http://m.e17.dk/DodpFiles/10142992/18716/MEM_001.mp3
     func remoteUrlForPart( partNumber: Int ) -> NSURL? {
         let part = parts[ partNumber]
-        let urlString = bookRemoteBaseUrl() + "\(self.id)/\(part.file)"
+        let urlString = remoteBaseUrl() + "\(self.id)/\(part.file)"
         let url  = NSURL(string: urlString)
         return url
     }
     
-    func bookRemoteBaseUrl() -> String {
+    func remoteBaseUrl() -> String {
         let userid = 10142992 // TODO: Get userid
         // TODO: Currently the bookid is included in the file name. It shouldnt be....
         // return "http://m.e17.dk/DodpFiles/\(userid)/\(self.id)/";
         return "http://m.e17.dk/DodpFiles/\(userid)/";
-
     }
-    
     
     func part( partNumber: Int ) -> BookPart {
         return parts[ partNumber]
     }
     
     func partNoForId( partId: String ) -> Int? {
-        
         for idx in 0..<parts.count {
             if let foundId = parts[ idx ].id {
                 if foundId == partId {
@@ -114,11 +111,9 @@ class Book: Mappable, CustomStringConvertible {
                 }
             }
         }
-        
         return nil
     }
 
-    
     func coverImage() -> UIImage {
         var coverImg: UIImage?  // TODO: Provide default cover instead (Nota logo?)
         if let path = NSBundle.mainBundle().pathForResource( self.cover , ofType: "jpg") {

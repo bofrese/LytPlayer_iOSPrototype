@@ -97,6 +97,17 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
         self.webView?.navigationDelegate = self
         self.webView?.allowsBackForwardNavigationGestures = true
         
+        self.player.whenAuthorizationFailed() {
+            showAlert("Du er ikke logget ind", message: "Vil du logge ind?") {
+                self.tabBarController?.selectedIndex = 2
+            }
+        }
+        self.player.whenPlayerItemFailed() { error in
+            showAlert("Afspilnings fejl", message: "Der er desværre opstået en fejl under afspilningen. \(error.localizedDescription). Prøv igen om lidt.") {
+                // TODO: What should we do?
+            }
+        }
+        
         // TODO: Book hardcoded
         onSerialQueue() {
             if let book = BookManager.sharedInstance.findBook("37723") {
@@ -111,7 +122,7 @@ class PlayerViewController: UIViewController, WKNavigationDelegate {
         // TODO: Hardcoded content file name, should be taken from Book info.
         //if let path = NSBundle.mainBundle().pathForResource( "18716/18716" , ofType: "htm") {
         if let path = NSBundle.mainBundle().pathForResource( "37723/main" , ofType: "html") {
-            let url  = NSURL.fileURLWithPath(path)
+            let url = NSURL.fileURLWithPath(path)
             let request = NSURLRequest(URL: url)
             webView?.loadRequest(request)
         }

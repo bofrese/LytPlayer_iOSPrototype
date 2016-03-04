@@ -85,23 +85,6 @@ class LibraryViewController: UIViewController, WKNavigationDelegate  {
         }
     }
 
-    // TODO: Move to generic function lib.
-    func showAlert(title: String, message: String, success: () -> () = {} ) {
-        
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        
-        alertController.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
-            NSLog("Handle Ok logic here")
-            success()
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
-            NSLog("Handle Cancel Logic here")
-        }))
-        
-        presentViewController(alertController, animated: true, completion: nil)
-    }
-    
     
     
     // Create a WKWebView and load the local library
