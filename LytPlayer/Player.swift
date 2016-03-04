@@ -184,7 +184,7 @@ class Player : NSObject, AVAudioPlayerDelegate {
     /// Added a player item for a given part to the play queue, and setup observers to automatically schedule the following parts.
     func addItemToPlayerQueue( partNo: Int ) {
         guard let currentBook = currentBook else { NSLog("NO currentBook in \(__FUNCTION__)"); return }
-        if let url = currentBook.remoteUrlForPart( partNo ) {
+        if let url = currentBook.urlForPart( partNo ) {
             NSLog("Add to Queue: \(url.lastPathComponent) from URL: \(url)")
             let asset = AVURLAsset(URL: url)
             let item = AVPlayerItem.init(asset: asset, automaticallyLoadedAssetKeys: ["duration","playable","tracks"]) // Asset keys that need to be present before the item is 'ready'
